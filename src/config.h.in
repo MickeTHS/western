@@ -1,0 +1,2 @@
+#define western_VERSION_MAJOR @western_VERSION_MAJOR@
+#define western_VERSION_MINOR @western_VERSION_MINOR@
