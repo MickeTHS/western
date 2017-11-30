@@ -1,5 +1,5 @@
 #include "config.h"
-#include "animation.h"
+#include "wst_animation.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
 
   sf::RenderWindow App(sf::VideoMode(800, 600, 32), "western alpha");
   
-  Animation_frames frames(_resource_path + "exwalk", 8);
+  Wst_Animation_frames frames(_resource_path + "exwalk", 8);
 
   sf::Sprite sprite;
 
