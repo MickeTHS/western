@@ -1,6 +1,6 @@
 #Change this if you need to target a specific CMake version
-cmake_minimum_required(VERSION 2.6)
-
+cmake_minimum_required(VERSION 3.1)
+set (CMAKE_CXX_STANDARD 11)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
@@ -24,16 +24,15 @@ macro(resource_dirs dirs)
         # Replace / at the end of the path (copy dir content VS copy dir)
         string(REGEX REPLACE "/+$" "" dirclean "${dir}")
         message(STATUS "Copying resource ${dirclean}")
-        file(COPY ${dirclean} DESTINATION bin/)
+        file(COPY ${dirclean} DESTINATION ${CMAKE_BINARY_DIR}/bin)
     endforeach()
 endmacro()
-
 
 # Define sources and executable
 set(EXECUTABLE_NAME "western")
 add_executable(${EXECUTABLE_NAME} main.cpp)
 
-resource_dirs(../resources)
+resource_dirs(${PROJECT_SOURCE_DIR}/../resources)
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
