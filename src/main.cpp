@@ -1,4 +1,5 @@
 #include "config.h"
+#include "animation.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -65,42 +66,6 @@ void key_pressed(sf::Keyboard::Key key, GameAction& result) {
   }
 } 
 
-struct AnimationFrame {
-  AnimationFrame(const std::string& path) {
-    if (!tex.loadFromFile(path)) {
-      std::cout << "unable to load " << path << std::endl;
-      exit(0);
-    }
-  }
-
-  sf::Texture tex;
-};
-
-struct AnimationFrames {
-  AnimationFrames(const std::string& prefix_path, int num_frames) {
-    for (int i = num_frames-1; i >= 0; --i) {
-      _frames.push_back(new AnimationFrame(prefix_path + std::to_string(i) + ".png"));
-    }
-    _current_frame = 0;
-  }
-
-  AnimationFrame* current() {
-    AnimationFrame* f = _frames[_current_frame];
-
-    _current_frame++;
-
-    if (_current_frame >= _frames.size()) {
-      _current_frame = 0;
-    }
-
-    return f;
-  }
-
-  std::vector<AnimationFrame*> _frames;
-  int _current_frame;
-
-};
-
 int main(int argc, char* argv[]) {
 
   /* Code adapted from the SFML 2 "Window" example */
@@ -111,7 +76,7 @@ int main(int argc, char* argv[]) {
 
   sf::RenderWindow App(sf::VideoMode(800, 600, 32), "western alpha");
   
-  AnimationFrames frames(_resource_path + "exwalk", 8);
+  Animation_frames frames(_resource_path + "exwalk", 8);
 
   sf::Sprite sprite;
 

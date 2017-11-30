@@ -17,6 +17,8 @@ configure_file(
   "${PROJECT_BINARY_DIR}/config.h"
   )
 include_directories("${PROJECT_BINARY_DIR}")
+include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("${PROJECT_SOURCE_DIR}")
 
 # Copy full directories
 macro(resource_dirs dirs)
@@ -30,7 +32,7 @@ endmacro()
 
 # Define sources and executable
 set(EXECUTABLE_NAME "western")
-add_executable(${EXECUTABLE_NAME} main.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp animation.cpp)
 
 resource_dirs(${PROJECT_SOURCE_DIR}/../resources)
 
