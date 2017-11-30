@@ -57,8 +57,10 @@ int main(int argc, char* argv[]) {
       }
     }
 
+    double delta = clock.getElapsedTime().asMilliseconds();
 
-    player.render(clock.getElapsedTime().asMilliseconds(), (sf::RenderTarget*)&App);
+
+    player.render(delta, (sf::RenderTarget*)&App);
 
     clock.restart();
     
