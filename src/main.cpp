@@ -1,5 +1,6 @@
 #include "config.h"
 #include "wst_animation.h"
+#include "wst_input_action.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,64 +8,7 @@
 #include <SFML/Window.hpp>
 
 using namespace std;
-
-enum GameAction {
-  NONE = 0,
-  MOVE_LEFT,
-  MOVE_RIGHT,
-  MOVE_UP,
-  MOVE_DOWN,
-  DRAW_HOLSTER_WEAPON,
-  UNCOCK_COCK_WEAPON,
-  LOAD_WEAPON,
-  UNLOAD_WEAPON,
-  FIRE_WEAPON,
-  MOUNT_DISMOUNT,
-  INTERACT,
-  LOOT,
-  DROP,
-  UNEQUIP_EQUIP,
-  TALK,
-  MAX_ACTION
-};
-
-void key_pressed(sf::Keyboard::Key key, GameAction& result) {
-  switch(key) {
-    case sf::Keyboard::Key::A:
-      result = MOVE_LEFT;
-      break;
-    case sf::Keyboard::Key::S:
-      result = MOVE_DOWN;
-      break;
-    case sf::Keyboard::Key::D:
-      result = MOVE_RIGHT;
-      break;
-    case sf::Keyboard::Key::W:
-      result = MOVE_UP;
-      break;
-    case sf::Keyboard::Key::Q:
-      result = UNCOCK_COCK_WEAPON;
-      break;
-    case sf::Keyboard::Key::E:
-      result = LOAD_WEAPON;
-      break;
-    case sf::Keyboard::Key::R:
-      result = UNLOAD_WEAPON;
-      break;
-    case sf::Keyboard::Key::Return:
-      result = INTERACT;
-      break;
-    case sf::Keyboard::Key::Space:
-      result = MOUNT_DISMOUNT;
-      break;
-    case sf::Keyboard::Key::Tab:
-      result = DRAW_HOLSTER_WEAPON;
-      break;
-    default:
-      result = NONE;
-      break;
-  }
-} 
+using namespace wst;
 
 int main(int argc, char* argv[]) {
 
@@ -76,14 +20,14 @@ int main(int argc, char* argv[]) {
 
   sf::RenderWindow App(sf::VideoMode(800, 600, 32), "western alpha");
   
-  Wst_Animation_frames frames(_resource_path + "exwalk", 8);
+  Animation_frames frames(_resource_path + "exwalk", 8);
 
   sf::Sprite sprite;
 
   sf::Clock clock; // starts the clock
 
-  GameAction action = NONE;
-  GameAction prev_action = NONE;
+  Game_action action = NONE;
+  Game_action prev_action = NONE;
   while (App.isOpen()) {
     sf::Event event;
 
@@ -98,7 +42,9 @@ int main(int argc, char* argv[]) {
 
         // key pressed
         case sf::Event::KeyPressed:
-          key_pressed(event.key.code, action);
+
+          Input_action_handler::instance()->handle_key_input(event.key.code, action);
+          
           if (prev_action != action) {
             std::cout << "queued action: " << action << std::endl;
             prev_action = action;

@@ -32,7 +32,7 @@ endmacro()
 
 # Define sources and executable
 set(EXECUTABLE_NAME "western")
-add_executable(${EXECUTABLE_NAME} main.cpp wst_animation.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp wst_animation.cpp wst_input_action.cpp)
 
 resource_dirs(${PROJECT_SOURCE_DIR}/../resources)
 
