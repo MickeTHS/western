@@ -1,5 +1,6 @@
 #include "config.h"
 #include "wst_animation.h"
+#include "wst_screenrenderobj.h"
 #include "wst_input_action.h"
 #include <iostream>
 #include <string>
@@ -20,12 +21,12 @@ int main(int argc, char* argv[]) {
 
   sf::RenderWindow App(sf::VideoMode(800, 600, 32), "western alpha");
   
-  Animation_frames frames(_resource_path + "exwalk", 8);
+  Screen_render_obj renderobj(_resource_path + "exwalk", 8);
 
   sf::Sprite sprite;
 
   sf::Clock clock; // starts the clock
-
+  
   Game_action action = NONE;
   Game_action prev_action = NONE;
   while (App.isOpen()) {
@@ -55,13 +56,12 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    sf::Time elapsed1 = clock.getElapsedTime();
-    if (elapsed1.asMilliseconds() > 100) {
-      sprite.setTexture(frames.current()->tex);  
-      clock.restart();
-    }
 
-    App.draw(sprite);
+    renderobj.render(clock.getElapsedTime().asMilliseconds(), (sf::RenderTarget*)&App);
+
+    clock.restart();
+    
+    //App.draw(sprite.);
     App.display();
   }
 }
