@@ -1,6 +1,7 @@
 #include "config.h"
 #include "wst_animation.h"
 #include "wst_screenrenderobj.h"
+#include "wst_player_character.h"
 #include "wst_input_action.h"
 #include <iostream>
 #include <string>
@@ -21,7 +22,7 @@ int main(int argc, char* argv[]) {
 
   sf::RenderWindow App(sf::VideoMode(800, 600, 32), "western alpha");
   
-  Screen_render_obj renderobj(_resource_path + "exwalk", 8);
+  Player_character player(_resource_path + "exwalk", 8);
 
   sf::Sprite sprite;
 
@@ -33,7 +34,7 @@ int main(int argc, char* argv[]) {
     sf::Event event;
 
     while (App.pollEvent(event)) {
-      
+
       switch (event.type)
       {
         // window closed
@@ -45,7 +46,7 @@ int main(int argc, char* argv[]) {
         case sf::Event::KeyPressed:
 
           Input_action_handler::instance()->handle_key_input(event.key.code, action);
-          
+
           if (prev_action != action) {
             std::cout << "queued action: " << action << std::endl;
             prev_action = action;
@@ -57,7 +58,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    renderobj.render(clock.getElapsedTime().asMilliseconds(), (sf::RenderTarget*)&App);
+    player.render(clock.getElapsedTime().asMilliseconds(), (sf::RenderTarget*)&App);
 
     clock.restart();
     

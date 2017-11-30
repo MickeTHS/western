@@ -24,6 +24,8 @@
 namespace wst {
     struct Screen_render_obj {
         Screen_render_obj(const std::string& prefix_path, int num_frames);
+        Screen_render_obj();
+        void load(const std::string& prefix_path, int num_frames);
 
         void render(double delta, sf::RenderTarget* target);
 
