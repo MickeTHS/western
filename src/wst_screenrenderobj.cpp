@@ -25,7 +25,7 @@ namespace wst {
         
         Pos p = abs_pos();
 
-        _frames.current()->drawable().setPosition(p.x, p.y);
+        _frames.current()->drawable().setPosition((float)p.x, (float)p.y);
 
         target->draw(_frames.current()->drawable());
     }
