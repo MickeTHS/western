@@ -14,7 +14,7 @@ namespace wst {
         sprite.setTexture(tex);
     }
 
-    sf::Drawable& Animation_frame::drawable() {
+    sf::Sprite& Animation_frame::drawable() {
         return sprite;
     }
 

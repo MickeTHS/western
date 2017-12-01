@@ -2,26 +2,37 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <vector>
 
 #include "wst_animation.h"
 #include "wst_worldobj.h"
 #include "wst_screenrenderobj.h"
+#include "wst_types.h"
 
 namespace wst {
-    
-    struct Scene_layer {
+       
+
+    struct Scene_layer : public Pos_graph_node {
         Scene_layer(const std::string& id, bool load_now);
 
         void set_keep_in_view(bool keep);
         void set_rect(int left, int top, int width, int height);
         void load();
 
+        std::string id();
+
         void set_z_index(int index);
         void add_render_obj(Screen_render_obj* obj);
         int z_index();
+        float pan_multiplier();
+        void set_pan_multiplier(float mult);
+        void render(double delta, sf::RenderTarget* target);
+        
 
     private:
         std::string     _id;
+
         // the order to draw the layers when grouped in a scene with multiple layers (pretty much always)
         int             _z_index;
 
@@ -38,12 +49,26 @@ namespace wst {
         std::vector<Screen_render_obj*> _render_objects;
     };
 
-    struct Scene {
+    bool sort_layers(Scene_layer* a, Scene_layer* b);
+
+    struct Scene : public Pos_graph_node  {
         Scene();
 
+        void set_rect(Rect rect);
+        Rect rect();
         void add_layer(Scene_layer* layer);
+        void set_clipping_rect(Rect rect);
+        Rect clipping_rect();
+
+        void order_layers();
+
+        Scene_layer* layer(const std::string& id);
+        void render(double delta, sf::RenderTarget* target);
 
     private:
         std::vector<Scene_layer*> _layers;
+        
+        Rect _view_rect;
+        Rect _clipping_rect;
     };
 }

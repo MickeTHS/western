@@ -18,13 +18,14 @@
 #include <string>
 
 #include "wst_animation.h"
+#include "wst_types.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 
 namespace wst {
-    struct Screen_render_obj {
+    struct Screen_render_obj : public Pos_graph_node {
         Screen_render_obj(const std::string& prefix_path, int num_frames);
         Screen_render_obj();
 

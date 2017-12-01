@@ -22,6 +22,10 @@ namespace wst {
             _frames.next();
             _timer = 0;
         }
+        
+        Pos p = abs_pos();
+
+        _frames.current()->drawable().setPosition(p.x, p.y);
 
         target->draw(_frames.current()->drawable());
     }

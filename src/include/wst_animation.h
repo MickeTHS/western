@@ -8,7 +8,7 @@
 namespace wst {
   struct Animation_frame {
     Animation_frame(const std::string& path);
-    sf::Drawable& drawable();
+    sf::Sprite& drawable();
 
     sf::Texture tex;
     sf::Sprite sprite;
