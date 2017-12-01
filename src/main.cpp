@@ -4,6 +4,7 @@
 #include "wst_player_character.h"
 #include "wst_input_action.h"
 #include "wst_gamescene.h"
+#include "wst_timer.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -45,7 +46,7 @@ int main(int argc, char* argv[]) {
 
 
     //sf::Clock clock; // starts the clock
-    clock_t begin = clock();
+    Timer tmr;
 
     Game_action action = NONE;
     Game_action prev_action = NONE;
@@ -77,16 +78,18 @@ int main(int argc, char* argv[]) {
 
         window.clear(sf::Color::Black);
 
-        clock_t end = clock();
+        
 
-        double delta = double(end - begin) / CLOCKS_PER_SEC;
+        //double delta = double(end - begin) / CLOCKS_PER_SEC;
 
+        double delta = tmr.elapsed();
+        tmr.reset();
         //double delta = (delta / 1000.0f);
 
         //player.render(delta, (sf::RenderTarget*)&window);
         first_scene.render(delta, (sf::RenderTarget*)&window);
 
-        begin = end;
+        //begin = end;
         //    clock.restart();
 
             //App.draw(sprite.);

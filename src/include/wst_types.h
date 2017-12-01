@@ -6,7 +6,7 @@ namespace wst {
 
     struct Size {
         Size(int w, int h) { this->w = w; this->h = h; }
-        Size() { this->w = w; this->h = h; }
+        Size() { this->w = 0; this->h = 0; }
 
         Size operator+ (const Size& other) const { return Size(w + other.w, h + other.h); }
         Size operator- (const Size& other) const { return Size(w - other.w, h - other.h); }
@@ -30,10 +30,10 @@ namespace wst {
         Pos(int x, int y) { this->x = x; this->y = y; }
         Pos() { x = 0; y = 0; }
 
-        Pos& operator+ (const Pos& other) const { return Pos(x + other.x, y + other.x); }
-        Pos& operator- (const Pos& other) const { return Pos(x - other.x, y - other.x); }
-        Pos& operator* (const Pos& other) const { return Pos(x * other.x, y * other.x); }
-        Pos& operator/ (const Pos& other) const { return Pos(x / other.x, y / other.x); }
+        Pos operator+ (const Pos& other) const { return Pos(x + other.x, y + other.x); }
+        Pos operator- (const Pos& other) const { return Pos(x - other.x, y - other.x); }
+        Pos operator* (const Pos& other) const { return Pos(x * other.x, y * other.x); }
+        Pos operator/ (const Pos& other) const { return Pos(x / other.x, y / other.x); }
 
         Pos& operator+= (const Pos& other) { x += other.x; y += other.y; return *this; }
         Pos& operator-= (const Pos& other) { x -= other.x; y -= other.y; return *this; }
