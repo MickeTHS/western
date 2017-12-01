@@ -15,7 +15,8 @@ namespace wst {
     }
 
     void Screen_render_obj::render(double delta, sf::RenderTarget* target) {
-        std::cout << "delta: " << delta << " timer: " << _timer << std::endl;
+        //std::cout << "delta: " << delta << " timer: " << _timer << std::endl;
+        
         _timer += delta;
 
         if (_timer > 0.100) {

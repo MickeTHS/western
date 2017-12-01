@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdio.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
@@ -22,20 +23,26 @@ int main(int argc, char* argv[]) {
 
     std::string _resource_path = "resources/";
 
-    cout << "Version " << western_VERSION_MAJOR << "." << western_VERSION_MINOR << endl;
+    char app_version[128];
+    char app_title[128];
+
+    sprintf(app_version, "ALPHA %d.%d.%d", western_VERSION_MAJOR, western_VERSION_MINOR, western_VERSION_PATCH);
+    sprintf(app_title, "Western Game %s", app_version);
+
+    cout << "Version " << app_version << endl;
 
     int screen_width = 800;
     int screen_height = 600;
 
-    sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), "western alpha");
+    sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
 
     Game_scene first_scene;
-    //first_scene.add_layer()
+    
     Scene_layer* first_layer = new Scene_layer("ground", true);
     first_scene.add_layer(first_layer);
     Screen_render_obj* obj = new Screen_render_obj(_resource_path + "ground", 1);
     obj->set_pos(Pos(200,200));
-    
+    first_layer->set_pos(Pos(0,20));
     
     Player_character player(_resource_path + "exwalk", 8);
     player.set_pos(Pos(10,10));
@@ -45,7 +52,6 @@ int main(int argc, char* argv[]) {
     first_layer->add_render_obj(obj);
 
 
-    //sf::Clock clock; // starts the clock
     Timer tmr;
 
     Game_action action = NONE;
@@ -78,22 +84,14 @@ int main(int argc, char* argv[]) {
 
         window.clear(sf::Color::Black);
 
-        
-
-        //double delta = double(end - begin) / CLOCKS_PER_SEC;
-
         double delta = tmr.elapsed();
         tmr.reset();
-        //double delta = (delta / 1000.0f);
 
         //player.render(delta, (sf::RenderTarget*)&window);
         first_scene.render(delta, (sf::RenderTarget*)&window);
 
-        //begin = end;
-        //    clock.restart();
-
-            //App.draw(sprite.);
         window.display();
     }
 
+    return 0;
 }

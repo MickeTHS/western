@@ -9,9 +9,30 @@ endif()
 
 project(western)
 
+if (UNIX)
+  set (show_contents_prog cat)
+elseif (WIN32)
+  set (show_contents_prog type)
+endif()
+
+set(BUILD_NUMBER_FILE ${PROJECT_SOURCE_DIR}/buildnumber.txt)
+
+MESSAGE("build number stored in " ${BUILD_NUMBER_FILE})
+
+if(NOT EXISTS ${BUILD_NUMBER_FILE})
+  MESSAGE(${BUILD_NUMBER_FILE})
+  FILE( WRITE ${BUILD_NUMBER_FILE} "1" )
+endif() 
+
+#execute_process(COMMAND ${show_contents_prog} buildnumber.txt OUTPUT_VARIABLE BUILD_NUMBER)
+FILE (READ ${BUILD_NUMBER_FILE} BUILD_NUMBER)
+MATH(EXPR BUILD_NUMBER ${BUILD_NUMBER}+1)
+FILE( WRITE ${BUILD_NUMBER_FILE} ${BUILD_NUMBER} )
+
 # Set version information in a config.h file
-set(western_VERSION_MAJOR 1)
-set(western_VERSION_MINOR 0)
+set(western_VERSION_MAJOR 0)
+set(western_VERSION_MINOR 1)
+set(western_VERSION_PATCH ${BUILD_NUMBER})
 configure_file(
   "${PROJECT_SOURCE_DIR}/config.h.in"
   "${PROJECT_BINARY_DIR}/config.h"
@@ -72,4 +93,5 @@ install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 include(InstallRequiredSystemLibraries)
 set(CPACK_PACKAGE_VERSION_MAJOR "${western_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${western_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${western_VERSION_PATCH}")
 include(CPack)

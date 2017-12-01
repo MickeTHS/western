@@ -11,16 +11,12 @@
 #include "wst_types.h"
 
 namespace wst {
-    struct World_obj {
+    struct World_obj : public Pos_graph_node {
         World_obj();
 
-        void set_pos(Pos& p);
         void set_rect(Rect& r);
 
-        Pos pos();
         Rect rect();
-
-        Pos _pos;
         Rect _rect;
     };
 }
