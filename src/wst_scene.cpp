@@ -19,8 +19,8 @@ namespace wst {
 
         }
 
-        if (_id == "ground") {
-
+        if (_id == "ground1") {
+            
         }
 
         if (_id == "frontpan") {
@@ -41,8 +41,17 @@ namespace wst {
         _rect = Rect(left, top, width, height);
     }
     
+    void Scene_layer::add_render_obj(Screen_render_obj* obj) {
+        _render_objects.push_back(obj);
+    }
+
+
     void Scene_layer::set_z_index(int index) { _z_index = index; }
     int Scene_layer::z_index() { return _z_index; }
 
     Scene::Scene() {}
+
+    void Scene::add_layer(Scene_layer* layer) {
+        _layers.push_back(layer);
+    }
 }
