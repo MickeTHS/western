@@ -30,7 +30,7 @@ namespace wst {
         float   pan_multiplier();
         void    set_pan_multiplier(float mult);
         void    render(double delta, sf::RenderTarget* target);
-
+        
         Size    size() override;
         
     private:

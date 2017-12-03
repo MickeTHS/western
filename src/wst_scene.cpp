@@ -8,6 +8,7 @@ namespace wst {
         _id = id;
         _z_index = 0;
         _fill_prop = FillScene_No;
+        
 
         if (load_now) {
             load();
@@ -66,11 +67,16 @@ namespace wst {
     }
 
     Size Scene_layer::size() {
+        if (_parent == NULL) {
+            return _size;
+        }
+
         return _parent->size();
     }
 
     Scene::Scene() {
-
+        _clipping_rect.size = Size(0,0);
+        _clipping_rect.topleft = Pos(0,0);
     }
 
     void Scene::add_layer(Scene_layer* layer) {

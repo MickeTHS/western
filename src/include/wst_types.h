@@ -30,10 +30,10 @@ namespace wst {
         Pos(int x, int y) { this->x = x; this->y = y; }
         Pos() { x = 0; y = 0; }
 
-        Pos operator+ (const Pos& other) const { return Pos(x + other.x, y + other.x); }
-        Pos operator- (const Pos& other) const { return Pos(x - other.x, y - other.x); }
-        Pos operator* (const Pos& other) const { return Pos(x * other.x, y * other.x); }
-        Pos operator/ (const Pos& other) const { return Pos(x / other.x, y / other.x); }
+        Pos operator+ (const Pos& other) const { return Pos(x + other.x, y + other.y); }
+        Pos operator- (const Pos& other) const { return Pos(x - other.x, y - other.y); }
+        Pos operator* (const Pos& other) const { return Pos(x * other.x, y * other.y); }
+        Pos operator/ (const Pos& other) const { return Pos(x / other.x, y / other.y); }
 
         Pos& operator+= (const Pos& other) { x += other.x; y += other.y; return *this; }
         Pos& operator-= (const Pos& other) { x -= other.x; y -= other.y; return *this; }
@@ -82,6 +82,8 @@ namespace wst {
     struct Pos_graph_node {
         Pos_graph_node() {
             _parent = NULL;
+            _pos = Pos(0,0);
+            _size = Size(0,0);
         }
 
         virtual Size size() { return _size; }

@@ -36,6 +36,10 @@ int main(int argc, char* argv[]) {
 
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
 
+    Screen_render_obj* horse = new Screen_render_obj(_resource_path + "horse_walk", 9);
+    horse->set_pos(Pos(200,200));
+    horse->set_reversed(true);
+    
     Game_scene first_scene;
     first_scene.set_pos(Pos(0,0));
     first_scene.set_rect(Rect(0, 0, screen_width, screen_height));
@@ -44,24 +48,40 @@ int main(int argc, char* argv[]) {
     // ----- THE SKY ------ / 
     Scene_layer* sky_layer = new Scene_layer("sky", true);
     Screen_render_obj* sky = new Screen_render_obj(_resource_path + "sky_horizon", 1);
+    
     sky->set_pos(Pos(0,0));
-    sky_layer->add_render_obj(sky);
+    
     sky_layer->set_pos(Pos(0,0));
-
+    sky_layer->set_size(Size(screen_width, screen_height));
+    sky_layer->add_render_obj(sky);
+    
+    std::cout << "setting fill" << std::endl;
+    std::cout << "done" << std::endl;
+    
+    
     // ----- THE GROUND ----- /
     Scene_layer* ground_layer = new Scene_layer("ground", true);
     Screen_render_obj* ground = new Screen_render_obj(_resource_path + "ground_repeat", 1);
     ground->set_pos(Pos(0,0));
     ground_layer->add_render_obj(ground);
-    ground_layer->set_pos(Pos(0,180));
+    ground_layer->set_pos(Pos(0,190));
 
     first_scene.add_layer(sky_layer);
     first_scene.add_layer(ground_layer);
+
+    sky->set_fill(FillScene_Repeat_x);
+    sky->update();
     
+    ground->set_fill(FillScene_Repeat_x);
+    ground->update();
+    
+
     Player_character player(_resource_path + "exwalk", 8);
     player.set_pos(Pos(10,10));
 
     Timer tmr;
+
+    double elapsed = 0.0;
 
     Game_action action = NONE;
     Game_action prev_action = NONE;
@@ -94,14 +114,25 @@ int main(int argc, char* argv[]) {
         window.clear(sf::Color::Black);
 
         double delta = tmr.elapsed();
+
+        elapsed += delta;
+
         tmr.reset();
 
         //player.render(delta, (sf::RenderTarget*)&window);
-        first_scene.render(delta, (sf::RenderTarget*)&window);
+        //first_scene.render(delta, (sf::RenderTarget*)&window);
 
-        Pos p = ground_layer->pos();
-        p.x += 1;
-        ground_layer->set_pos(p);
+        if (elapsed > 0.100) {
+            Pos p = ground->pos();
+            ground->set_pos(p + Pos(-1,0));
+            elapsed = 0;
+
+        }
+
+        horse->render(delta, (sf::RenderTarget*)&window);
+        //Pos p = ground_layer->pos();
+        //p.x += 1;
+        //ground_layer->set_pos(p);
 
         window.display();
     }

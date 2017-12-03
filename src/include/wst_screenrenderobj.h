@@ -49,9 +49,15 @@ namespace wst {
         FillScene get_fill();
 
         void update();
+
+        void set_pos(Pos p) override;
+        void set_size(Size size) override;
+        void set_reversed(bool reverse);
     private:
         Animation_frames    _frames;
         double              _timer;
         FillScene           _fill_prop;
+        bool                _valid;
+        bool                _reversed;
     };
 }
