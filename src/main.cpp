@@ -37,20 +37,29 @@ int main(int argc, char* argv[]) {
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
 
     Game_scene first_scene;
+    first_scene.set_pos(Pos(0,0));
+    first_scene.set_rect(Rect(0, 0, screen_width, screen_height));
+    first_scene.set_clipping_rect(Rect(0, 0, screen_width, screen_height));
     
-    Scene_layer* first_layer = new Scene_layer("ground", true);
-    first_scene.add_layer(first_layer);
-    Screen_render_obj* obj = new Screen_render_obj(_resource_path + "ground", 1);
-    obj->set_pos(Pos(200,200));
-    first_layer->set_pos(Pos(0,20));
+    // ----- THE SKY ------ / 
+    Scene_layer* sky_layer = new Scene_layer("sky", true);
+    Screen_render_obj* sky = new Screen_render_obj(_resource_path + "sky_horizon", 1);
+    sky->set_pos(Pos(0,0));
+    sky_layer->add_render_obj(sky);
+    sky_layer->set_pos(Pos(0,0));
+
+    // ----- THE GROUND ----- /
+    Scene_layer* ground_layer = new Scene_layer("ground", true);
+    Screen_render_obj* ground = new Screen_render_obj(_resource_path + "ground_repeat", 1);
+    ground->set_pos(Pos(0,0));
+    ground_layer->add_render_obj(ground);
+    ground_layer->set_pos(Pos(0,180));
+
+    first_scene.add_layer(sky_layer);
+    first_scene.add_layer(ground_layer);
     
     Player_character player(_resource_path + "exwalk", 8);
     player.set_pos(Pos(10,10));
-
-
-    first_layer->add_render_obj(&player);
-    first_layer->add_render_obj(obj);
-
 
     Timer tmr;
 
@@ -89,6 +98,10 @@ int main(int argc, char* argv[]) {
 
         //player.render(delta, (sf::RenderTarget*)&window);
         first_scene.render(delta, (sf::RenderTarget*)&window);
+
+        Pos p = ground_layer->pos();
+        p.x += 1;
+        ground_layer->set_pos(p);
 
         window.display();
     }

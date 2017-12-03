@@ -84,6 +84,9 @@ namespace wst {
             _parent = NULL;
         }
 
+        virtual Size size() { return _size; }
+        virtual void set_size(Size s) { _size = s; }
+
         virtual Pos pos() { return _pos; }
         virtual void set_pos(Pos pos) { _pos = pos; }
         
@@ -125,9 +128,10 @@ namespace wst {
             return p;
         }
 
-        Pos _pos;
+        Pos     _pos;
+        Size    _size;
         
         std::vector<Pos_graph_node*> _children;
-        Pos_graph_node* _parent;
+        Pos_graph_node  *_parent;
     };
 }

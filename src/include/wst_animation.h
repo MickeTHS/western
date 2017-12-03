@@ -23,10 +23,12 @@ namespace wst {
     Animation_frame* next();
     Animation_frame* current();
 
+    void set_tex_repeat(bool repeat);
+
   private:
     std::vector<Animation_frame*> _frames;
-    int _current_frame;
-
+    int   _current_frame;
+    bool  _repeat;
   };
 
 }

@@ -25,6 +25,18 @@
 
 
 namespace wst {
+
+    enum FillScene {
+        FillScene_No = 0,
+        FillScene_Repeat_x,
+        FillScene_Repeat_y,
+        FillScene_Repeat_xy,
+        FillScene_Stretch_x,
+        FillScene_Stretch_y,
+        FillScene_Stretch_xy
+    };
+
+
     struct Screen_render_obj : public Pos_graph_node {
         Screen_render_obj(const std::string& prefix_path, int num_frames);
         Screen_render_obj();
@@ -33,8 +45,13 @@ namespace wst {
 
         void render(double delta, sf::RenderTarget* target);
 
+        void set_fill(FillScene prop);
+        FillScene get_fill();
+
+        void update();
     private:
-        Animation_frames _frames;
-        double _timer;
+        Animation_frames    _frames;
+        double              _timer;
+        FillScene           _fill_prop;
     };
 }

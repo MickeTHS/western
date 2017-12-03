@@ -10,26 +10,29 @@
 #include "wst_screenrenderobj.h"
 #include "wst_types.h"
 
-namespace wst {
-       
 
+
+namespace wst {
+    
     struct Scene_layer : public Pos_graph_node {
         Scene_layer(const std::string& id, bool load_now);
 
-        void set_keep_in_view(bool keep);
-        void set_rect(int left, int top, int width, int height);
-        void load();
+        void    set_keep_in_view(bool keep);
+        void    set_rect(int left, int top, int width, int height);
+        void    set_rect(Rect r);
+        void    load();
 
         std::string id();
 
-        void set_z_index(int index);
-        void add_render_obj(Screen_render_obj* obj);
-        int z_index();
-        float pan_multiplier();
-        void set_pan_multiplier(float mult);
-        void render(double delta, sf::RenderTarget* target);
-        
+        void    set_z_index(int index);
+        void    add_render_obj(Screen_render_obj* obj);
+        int     z_index();
+        float   pan_multiplier();
+        void    set_pan_multiplier(float mult);
+        void    render(double delta, sf::RenderTarget* target);
 
+        Size    size() override;
+        
     private:
         std::string     _id;
 
@@ -45,6 +48,8 @@ namespace wst {
         // the bounding rect of the layer
         Rect            _rect;
 
+        FillScene       _fill_prop;
+
 
         std::vector<Screen_render_obj*> _render_objects;
     };
@@ -54,15 +59,21 @@ namespace wst {
     struct Scene : public Pos_graph_node  {
         Scene();
 
+        // this determines the size of the scene
         void set_rect(Rect rect);
         Rect rect();
-        void add_layer(Scene_layer* layer);
+        Size size() override;
+        // clipping rect is the way we "clip" the scene. if we move the clipping rect it wont cause the scene to move,
+        // rather it will cause the "lens" to move
         void set_clipping_rect(Rect rect);
         Rect clipping_rect();
 
         void order_layers();
 
+        void add_layer(Scene_layer* layer);
         Scene_layer* layer(const std::string& id);
+        void update_children();
+
         void render(double delta, sf::RenderTarget* target);
 
     private:
