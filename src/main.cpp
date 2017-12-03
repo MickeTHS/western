@@ -5,10 +5,13 @@
 #include "wst_input_action.h"
 #include "wst_gamescene.h"
 #include "wst_timer.h"
+#include "json11.h"
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <stdio.h>
+#include <stdlib.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
@@ -19,9 +22,39 @@ using namespace wst;
 
 int main(int argc, char* argv[]) {
 
-    /* Code adapted from the SFML 2 "Window" example */
+    const string simple_test =
+        R"({"k1":"v1", "k2":42, "k3":["a",123,true,false,null]})";
 
+    string err;
+    const auto json = json11::Json::parse(simple_test, err);
+
+    std::cout << "k1: " << json["k1"].string_value() << "\n";
+    std::cout << "k3: " << json["k3"].dump() << "\n";
+
+    
     std::string _resource_path = "resources/";
+    std::string horse_filepath = "resources/characters/horse.json";
+
+    FILE *f = fopen(horse_filepath.c_str(), "r");
+    fseek(f, 0, SEEK_END);
+    long fsize = ftell(f);
+    fseek(f, 0, SEEK_SET);  //same as rewind(f);
+
+    char *content = (char*)malloc(fsize + 1);
+    fread(content, fsize, 1, f);
+    fclose(f);
+
+    content[fsize] = 0;
+
+    const auto json_horse = json11::Json::parse(content, err);
+
+    std::cout << err << std::endl;
+
+    std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;
+
+    char animation_filepath[256];
+
+    sprintf(animation_filepath, "%s%s", _resource_path.c_str(), json_horse["animation"].string_value().c_str());
 
     char app_version[128];
     char app_title[128];
@@ -36,9 +69,10 @@ int main(int argc, char* argv[]) {
 
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
 
-    Screen_render_obj* horse = new Screen_render_obj(_resource_path + "horse_walk", 9);
+    Screen_render_obj* horse = new Screen_render_obj(animation_filepath, 9);
     horse->set_pos(Pos(200,200));
     horse->set_reversed(true);
+    horse->set_framerate(0.1);
     
     Game_scene first_scene;
     first_scene.set_pos(Pos(0,0));

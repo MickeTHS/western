@@ -5,12 +5,14 @@ namespace wst {
         load(prefix_path, num_frames);
         _timer = 0;
         _reversed = false;
+        _frame_rate = 0.1;
         
     }
 
     Screen_render_obj::Screen_render_obj() {
         _timer = 0;
         _reversed = false;
+        _frame_rate = 0.1;
     }
 
     void Screen_render_obj::load(const std::string& prefix_path, int num_frames) {
@@ -24,12 +26,16 @@ namespace wst {
         _valid = true;
     }
 
+    void Screen_render_obj::set_framerate(double rate) {
+        _frame_rate = rate;
+    }
+
     void Screen_render_obj::render(double delta, sf::RenderTarget* target) {
         //std::cout << "delta: " << delta << " timer: " << _timer << std::endl;
         
         _timer += delta;
 
-        if (_timer > 0.100) {
+        if (_timer > _frame_rate) {
             _frames.next();
             _timer = 0;
         }

@@ -67,7 +67,7 @@ namespace wst {
         if (_reversed) {
             _current_frame--;
 
-            if (_current_frame <= 0) {
+            if (_current_frame < 0) {
                 _current_frame = _frames.size()-1;
             }
         }

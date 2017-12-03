@@ -53,11 +53,14 @@ namespace wst {
         void set_pos(Pos p) override;
         void set_size(Size size) override;
         void set_reversed(bool reverse);
+
+        void set_framerate(double rate);
     private:
         Animation_frames    _frames;
         double              _timer;
         FillScene           _fill_prop;
         bool                _valid;
         bool                _reversed;
+        double              _frame_rate;
     };
 }

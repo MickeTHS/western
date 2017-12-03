@@ -67,7 +67,8 @@ add_executable(${EXECUTABLE_NAME} main.cpp
                   wst_worldlocation.cpp
                   wst_scene.cpp
                   wst_cutscene.cpp
-                  wst_gamescene.cpp)
+                  wst_gamescene.cpp
+                  json11.cpp)
 
 resource_dirs(${PROJECT_SOURCE_DIR}/../resources)
 
