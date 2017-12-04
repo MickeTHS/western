@@ -112,5 +112,9 @@ namespace wst {
                 _pos = p;
             }
         }
+        else {
+            _pos = p;
+            _frames.set_pos(p);
+        }
     }
 }

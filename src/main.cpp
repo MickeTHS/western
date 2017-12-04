@@ -5,6 +5,7 @@
 #include "wst_input_action.h"
 #include "wst_gamescene.h"
 #include "wst_timer.h"
+#include "wst_trace.h"
 #include "json11.h"
 #include <iostream>
 #include <fstream>
@@ -20,7 +21,10 @@
 using namespace std;
 using namespace wst;
 
+
+
 int main(int argc, char* argv[]) {
+    TRACE("starting application");
 
     const string simple_test =
         R"({"k1":"v1", "k2":42, "k3":["a",123,true,false,null]})";
@@ -35,7 +39,7 @@ int main(int argc, char* argv[]) {
     std::string _resource_path = "resources/";
     std::string horse_filepath = "resources/characters/horse.json";
 
-    FILE *f = fopen(horse_filepath.c_str(), "r");
+    FILE *f = fopen(horse_filepath.c_str(), "rb");
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);
     fseek(f, 0, SEEK_SET);  //same as rewind(f);
@@ -43,6 +47,8 @@ int main(int argc, char* argv[]) {
     char *content = (char*)malloc(fsize + 1);
     fread(content, fsize, 1, f);
     fclose(f);
+
+    std::cout << content << std::endl;
 
     content[fsize] = 0;
 
@@ -70,7 +76,7 @@ int main(int argc, char* argv[]) {
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
 
     Screen_render_obj* horse = new Screen_render_obj(animation_filepath, 9);
-    horse->set_pos(Pos(200,200));
+    horse->set_pos(Pos(200,150));
     horse->set_reversed(true);
     horse->set_framerate(0.1);
     
@@ -156,7 +162,7 @@ int main(int argc, char* argv[]) {
         //player.render(delta, (sf::RenderTarget*)&window);
         first_scene.render(delta, (sf::RenderTarget*)&window);
 
-        if (elapsed > 0.100) {
+        if (elapsed > 0.025) {
             Pos p = ground->pos();
             ground->set_pos(p + Pos(-1,0));
             elapsed = 0;
