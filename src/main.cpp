@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
         tmr.reset();
 
         //player.render(delta, (sf::RenderTarget*)&window);
-        //first_scene.render(delta, (sf::RenderTarget*)&window);
+        first_scene.render(delta, (sf::RenderTarget*)&window);
 
         if (elapsed > 0.100) {
             Pos p = ground->pos();
