@@ -10,7 +10,7 @@ namespace wst {
     struct trlog
     {
         FILE *log_file;
-        trlog() { fopen_s(&log_file, "vis.log", "w"); }
+        trlog() { fopen_s(&log_file, "western.log", "w"); }
         ~trlog() { fclose(log_file); }
         static void write_msg(const char *file, const char *func, int line, const char *msg)
         {

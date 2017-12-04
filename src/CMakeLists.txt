@@ -53,22 +53,35 @@ endmacro()
 
 # Define sources and executable
 set(EXECUTABLE_NAME "western")
-add_executable(${EXECUTABLE_NAME} main.cpp 
-                  wst_animation.cpp 
-                  wst_input_action.cpp 
-                  wst_screenrenderobj.cpp 
-                  wst_player_character.cpp
-                  wst_ai_character.cpp
-                  wst_stat_character.cpp
-                  wst_quest_character.cpp
-                  wst_npc.cpp
-                  wst_staticobj.cpp
-                  wst_worldobj.cpp
-                  wst_worldlocation.cpp
-                  wst_scene.cpp
-                  wst_cutscene.cpp
-                  wst_gamescene.cpp
-                  json11.cpp)
+
+set(SOURCE main.cpp 
+        wst_animation.cpp 
+        wst_input_action.cpp 
+        wst_screenrenderobj.cpp 
+        wst_player_character.cpp
+        wst_ai_character.cpp
+        wst_stat_character.cpp
+        wst_quest_character.cpp
+        wst_npc.cpp
+        wst_staticobj.cpp
+        wst_worldobj.cpp
+        wst_worldlocation.cpp
+        wst_scene.cpp
+        wst_cutscene.cpp
+        wst_gamescene.cpp
+        json11.cpp)
+
+if (WIN32)
+    set(SOURCE
+        ${SOURCE}
+        wst_win32.cpp)
+else ()
+    set(SOURCE
+        ${SOURCE}
+        wst_unix.cpp)
+endif ()
+
+add_executable(${EXECUTABLE_NAME} ${SOURCE})
 
 resource_dirs(${PROJECT_SOURCE_DIR}/../resources)
 
