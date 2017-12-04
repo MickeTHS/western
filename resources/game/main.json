@@ -1,0 +1,9 @@
+{
+    "intro":"none",
+    "games": [
+        {
+            "title":"New Game",
+            "ref":"maingame.json"
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+{
+    "id":"maingame",
+    "mode":"story",
+    "entry_scene":"intro.json",
+    "player":"player.json"
+}

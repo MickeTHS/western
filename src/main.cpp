@@ -59,6 +59,7 @@ int main(int argc, char* argv[]) {
     std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;
 
     char animation_filepath[256];
+    int num_frames = json_horse["num_frames"].int_value();
 
     sprintf(animation_filepath, "%s%s", _resource_path.c_str(), json_horse["animation"].string_value().c_str());
 
@@ -75,8 +76,8 @@ int main(int argc, char* argv[]) {
 
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
 
-    Screen_render_obj* horse = new Screen_render_obj(animation_filepath, 9);
-    horse->set_pos(Pos(200,150));
+    Screen_render_obj* horse = new Screen_render_obj(animation_filepath, num_frames);
+    horse->set_pos(Pos(0,0));
     horse->set_reversed(true);
     horse->set_framerate(0.1);
     
@@ -114,6 +115,7 @@ int main(int argc, char* argv[]) {
     
     ground->set_fill(FillScene_Repeat_x);
     ground->update();
+    ground_layer->add_render_obj(horse);
     
 
     Player_character player(_resource_path + "exwalk", 8);
@@ -169,7 +171,7 @@ int main(int argc, char* argv[]) {
 
         }
 
-        horse->render(delta, (sf::RenderTarget*)&window);
+        //horse->render(delta, (sf::RenderTarget*)&window);
         //Pos p = ground_layer->pos();
         //p.x += 1;
         //ground_layer->set_pos(p);
