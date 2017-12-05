@@ -24,6 +24,8 @@ namespace wst {
         Json_resource(const string& filename);
         string id();
         bool load(const string& filepath);
+        bool parse(const char* data);
+        void set_json(json11::Json jsondata);
         
         virtual bool init() = 0;
         virtual Resource_type type() = 0;

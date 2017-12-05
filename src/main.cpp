@@ -38,23 +38,7 @@ int main(int argc, char* argv[]) {
 
     
     std::string _resource_path = "resources/";
-    std::string horse_filepath = "resources/game/characters/horse.json";
-
-    /*FILE *f = fopen(horse_filepath.c_str(), "rb");
-    fseek(f, 0, SEEK_END);
-    long fsize = ftell(f);
-    fseek(f, 0, SEEK_SET);  //same as rewind(f);
-
-    char *content = (char*)malloc(fsize + 1);
-    fread(content, fsize, 1, f);
-    fclose(f);
-
-    std::cout << content << std::endl;
-
-    content[fsize] = 0;
-
-    const auto json_horse = json11::Json::parse(content, err);*/
-
+    
     json11::Json json_test;
 
     Json_resource::load_file(horse_filepath, json_test);

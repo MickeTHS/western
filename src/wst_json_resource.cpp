@@ -22,6 +22,22 @@ namespace wst {
 
         return Json_resource::load_file(filepath, json);
     }
+
+    void Json_resource::set_json(json11::Json jsondata) {
+        json = jsondata;
+    }
+
+    bool Json_resource::parse(const char* data) {
+        std::string err;
+        json = json11::Json::parse(data, err);
+
+        if (!err.empty()) {
+            TRACE("load err: %s", err.c_str());
+            return false;
+        }
+
+        return true;
+    }
     
     bool Json_resource::load_file(const string& filepath, json11::Json& json) {
         
@@ -37,7 +53,7 @@ namespace wst {
 
         std::string err;
         json = json11::Json::parse(content, err);
-        LOG("load_file: %s\n", json["id"].string_value().c_str());
+        
         free(content);
 
         if (!err.empty()) {

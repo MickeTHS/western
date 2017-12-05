@@ -2,5 +2,6 @@
     "id":"horse",
     "animation":"horse_walk",
     "num_frames":9,
-    "type":"npc"
+    "type":"npc",
+    "data":"../data/horse.png"
 }
