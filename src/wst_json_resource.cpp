@@ -38,6 +38,44 @@ namespace wst {
 
         return true;
     }
+
+    bool Json_resource::valid_string(json11::Json& j, const char* name) {
+        if (!j[name].is_string()) {
+            LOG("element \"%s\" is missing or not a string\n", name);
+            return false;
+        }
+
+        return true;
+    }
+
+    
+    bool Json_resource::valid_bool(json11::Json& j, const char* name) {
+        if (!j[name].is_bool()) {
+            LOG("element \"%s\" is missing or not a boolean (true or false)\n", name);
+            return false;
+        }
+
+        return true;
+    }
+
+    bool Json_resource::valid_int(json11::Json& j, const char* name) {
+        if (!j[name].is_number()) {
+            LOG("element \"%s\" is missing or not an integer\n", name);
+            return false;
+        }
+
+        return true;
+    }
+
+    bool Json_resource::valid_array(json11::Json& j, const char* name) {
+        if (!j[name].is_array()) {
+            LOG("element \"%s\" is missing or not an array\n", name);
+            return false;
+        }
+
+        return true;
+    }
+    
     
     bool Json_resource::load_file(const string& filepath, json11::Json& json) {
         

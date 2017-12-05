@@ -9,10 +9,18 @@
 #include "wst_worldobj.h"
 #include "wst_screenrenderobj.h"
 #include "wst_types.h"
+#include "wst_json_resource.h"
 
 
 
 namespace wst {
+    struct Frame {
+        Frame(int time, const string& object_id, const string& action);
+
+        int     _time;
+        string  _object_id;
+        string  _action;
+    };
     
     struct Scene_layer : public Pos_graph_node {
         Scene_layer(const std::string& id, bool load_now);
@@ -56,8 +64,11 @@ namespace wst {
 
     bool sort_layers(Scene_layer* a, Scene_layer* b);
 
-    struct Scene : public Pos_graph_node  {
-        Scene();
+    struct Scene : public Pos_graph_node, public Json_resource  {
+        Scene(const string& filepath);
+
+        bool init() override;
+        Resource_type type() override;
 
         // this determines the size of the scene
         void set_rect(Rect rect);
@@ -81,5 +92,13 @@ namespace wst {
         
         Rect _view_rect;
         Rect _clipping_rect;
+
+        bool    _skippable;
+        string  _next_scene;
+        
+        Resource_type _type;
+
+        vector<string> _asset_ids;
+        vector<Frame*> _frames;
     };
 }

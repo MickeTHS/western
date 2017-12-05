@@ -26,11 +26,16 @@ namespace wst {
         bool load(const string& filepath);
         bool parse(const char* data);
         void set_json(json11::Json jsondata);
+
+        bool valid_string   (json11::Json& j, const char* name);
+        bool valid_bool     (json11::Json& j, const char* name);
+        bool valid_int      (json11::Json& j, const char* name);
+        bool valid_array    (json11::Json& j, const char* name);
         
         virtual bool init() = 0;
         virtual Resource_type type() = 0;
 
-        static bool Json_resource::load_file(const string& filepath, json11::Json& json);
+        static bool load_file(const string& filepath, json11::Json& json);
 
     protected:
         json11::Json json;

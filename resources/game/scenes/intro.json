@@ -1,11 +1,11 @@
 {
     "type":"cinematic",
     "skippable":true,
-    "next_scene":"scene_0.json",
+    "next_scene":"game/scenes/scene_0.json",
     "assets": [
         {
             "object_id":"somehorse",
-            "file":"../characters/horse.json"
+            "file":"game/characters/horse.json"
         }
     ],
     "frames": [

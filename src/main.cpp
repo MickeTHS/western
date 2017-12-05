@@ -3,10 +3,11 @@
 #include "wst_screenrenderobj.h"
 #include "wst_player_character.h"
 #include "wst_input_action.h"
-#include "wst_gamescene.h"
 #include "wst_timer.h"
 #include "wst_trace.h"
 #include "wst_json_resource.h"
+#include "wst_main.h"
+#include "wst_asset_manager.h"
 #include "json11.h"
 #include <iostream>
 #include <fstream>
@@ -25,27 +26,16 @@ using namespace wst;
 
 
 int main(int argc, char* argv[]) {
-    TRACE("starting application");
+    TRACE("starting application\n");
 
-    const string simple_test =
-        R"({"k1":"v1", "k2":42, "k3":["a",123,true,false,null]})";
-
-    string err;
-    const auto json = json11::Json::parse(simple_test, err);
-
-    std::cout << "k1: " << json["k1"].string_value() << "\n";
-    std::cout << "k3: " << json["k3"].dump() << "\n";
-
+    Asset_manager::ROOT_FOLDER = "resources/";
     
     std::string _resource_path = "resources/";
-    
-    json11::Json json_test;
 
-    Json_resource::load_file(horse_filepath, json_test);
-
-    LOG("static load: %s\n", json_test["id"].string_value().c_str());
-
-    std::cout << err << std::endl;
+    Main g(_resource_path + "main.json");
+    if (!g.init()) {
+        LOG("error: failed to init main.json\n");
+    }
 
     //std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;
 
@@ -71,7 +61,7 @@ int main(int argc, char* argv[]) {
     horse->set_pos(Pos(0,0));
     horse->set_reversed(true);
     horse->set_framerate(0.1);*/
-    
+    /*
     Game_scene first_scene;
     first_scene.set_pos(Pos(0,0));
     first_scene.set_rect(Rect(0, 0, screen_width, screen_height));
@@ -110,7 +100,7 @@ int main(int argc, char* argv[]) {
     
 
     Player_character player(_resource_path + "exwalk", 8);
-    player.set_pos(Pos(10,10));
+    player.set_pos(Pos(10,10));*/
 
     Timer tmr;
 
@@ -153,14 +143,14 @@ int main(int argc, char* argv[]) {
         tmr.reset();
 
         //player.render(delta, (sf::RenderTarget*)&window);
-        first_scene.render(delta, (sf::RenderTarget*)&window);
+        /*first_scene.render(delta, (sf::RenderTarget*)&window);
 
         if (elapsed > 0.025) {
             Pos p = ground->pos();
             ground->set_pos(p + Pos(-1,0));
             elapsed = 0;
 
-        }
+        }*/
 
         //horse->render(delta, (sf::RenderTarget*)&window);
         //Pos p = ground_layer->pos();

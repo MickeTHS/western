@@ -11,7 +11,10 @@
 using namespace std;
 
 namespace wst {
+    
     struct Asset_manager {
+
+        static string ROOT_FOLDER;
         
         Asset_manager(Asset_manager const&) = delete;
         Asset_manager& operator=(Asset_manager const&) = delete;

@@ -3,5 +3,5 @@
     "animation":"horse_walk",
     "num_frames":9,
     "type":"npc",
-    "data":"../data/horse.png"
+    "data":"game/data/horse.png"
 }

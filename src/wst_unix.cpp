@@ -11,7 +11,7 @@ namespace wst {
 
         va_list args;
         va_start(args, msg);
-        sprintf(bf, msg, args);
+        vsprintf(bf, msg, args);
         va_end(args);
 
         printf("%s", bf);
@@ -28,14 +28,16 @@ namespace wst {
 
     void trace_handler(const char *file, const char *func, int line, const char *msg, ...)
     {
+
+        
         static char bf[4096] = { 0 };
 
         va_list args;
         va_start(args, msg);
-        sprintf(bf, msg, args);
+        vsprintf(bf, msg, args);
         va_end(args);
 
-        printf("%s", bf);
+        printf("(%s) %s:%d: %s", file, func, line, bf);
 
         bf[4095] = 0;
     }

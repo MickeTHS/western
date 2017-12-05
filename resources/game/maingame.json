@@ -1,6 +1,6 @@
 {
     "id":"maingame",
     "mode":"story",
-    "next_scene":"scenes/intro.json",
-    "player":"characters/player.json"
+    "next_scene":"game/scenes/intro.json",
+    "player":"game/characters/player.json"
 }

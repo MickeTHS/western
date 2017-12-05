@@ -4,6 +4,8 @@
 #include "wst_npc.h"
 
 namespace wst {
+    string Asset_manager::ROOT_FOLDER = "";
+
     shared_ptr<Json_resource> Asset_manager::get_by_id(const string& id) {
         for (auto obj : _objects) {
             if (obj->id() == id) {
@@ -24,12 +26,12 @@ namespace wst {
         json11::Json json;
         
         if (!Json_resource::load_file(filepath, json)) {
-            LOG("error: cant load file %s\n", filepath);
+            LOG("error: cant load file %s\n", filepath.c_str());
             return nullptr;
         }
 
         if (!json["type"].is_string()) {
-            LOG("error: %s missing \"type\" element\n", filepath);
+            LOG("error: %s missing \"type\" element\n", filepath.c_str());
             return nullptr;
         }
 
@@ -51,7 +53,7 @@ namespace wst {
 
         if (res == nullptr) {
             LOG("error: %s has unrecognized type \"%s\"\n", type.c_str());
-            return false;
+            return nullptr;
         }
 
         res->set_json(json);

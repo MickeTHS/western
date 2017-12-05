@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include <memory>
+
 #include "wst_json_resource.h"
 #include "wst_types.h"
 
@@ -7,10 +11,12 @@ using namespace std;
 
 namespace wst {
     struct Game : public Json_resource {
-        Game(const string& resourcepath);
+        Game(const string& title, const string& resourcepath);
 
         bool init();
         Resource_type type();
+
+        string _title;
     };
 
     struct Main : public Json_resource {
@@ -19,6 +25,8 @@ namespace wst {
         bool init();
         Resource_type type();
 
-        string intro;
+        string _intro;
+
+        vector<shared_ptr<Game>> _games;
     };
 }
