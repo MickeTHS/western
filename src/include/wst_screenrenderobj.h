@@ -23,6 +23,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+using namespace std;
 
 namespace wst {
 
@@ -38,15 +39,18 @@ namespace wst {
 
 
     struct Screen_render_obj : public Pos_graph_node {
-        Screen_render_obj(const std::string& prefix_path, int num_frames);
+        Screen_render_obj(const string& prefix_path, int num_frames);
         Screen_render_obj();
 
-        void load(const std::string& prefix_path, int num_frames);
+        void load(const string& prefix_path, int num_frames);
 
         void render(double delta, sf::RenderTarget* target);
 
         void set_fill(FillScene prop);
         FillScene get_fill();
+
+        string id();
+        void set_id(const string& id);
 
         void update();
 
@@ -62,5 +66,6 @@ namespace wst {
         bool                _valid;
         bool                _reversed;
         double              _frame_rate;
+        string              _id;
     };
 }

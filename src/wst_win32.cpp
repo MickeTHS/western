@@ -6,6 +6,20 @@
 
 namespace wst {
 
+    void log_handler(const char *msg, ...)
+    {
+        static char bf[4096] = { 0 };
+
+        va_list args;
+        va_start(args, msg);
+        _vsnprintf_s(bf, 4095, msg, args);
+        va_end(args);
+
+        printf("%s", bf);
+
+        bf[4095] = 0;
+    }
+
     #if !defined(NOTRACE)
     struct trlog
     {

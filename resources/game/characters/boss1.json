@@ -1,0 +1,20 @@
+{
+    "id":"player",
+    "animation":"exwalk",
+    "type":"npc",
+    "unique":false,
+    "factions":["bandits"],
+    "loot":[
+        {"type":"table", "table":"common_items"},
+        {"type":"table", "table":"common_items"},
+        {"type":"table", "table":"common_items"},
+        {"type":"table", "table":"rare_items"}
+    ],
+    "equipment":[
+        {"type":"jacket"},
+        {"type":"boots"},
+        {"type":"hat"},
+        {"type":"gunbelt"},
+        {"type":"pants"}
+    ]
+}

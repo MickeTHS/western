@@ -1,0 +1,25 @@
+{
+    "type":"cinematic",
+    "skippable":true,
+    "next_scene":"scene_0.json",
+    "assets": [
+        {
+            "object_id":"somehorse",
+            "file":"../characters/horse.json"
+        }
+    ],
+    "frames": [
+        {
+            "time":0,
+            "object_id":"somehorse",
+            "action":"gallop",
+            "pos":[-100,200]
+        },
+        {
+            "time":10000,
+            "object_id":"somehorse",
+            "action":"stop",
+            "pos":[200,200]
+        }
+    ]
+}

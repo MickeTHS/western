@@ -69,6 +69,8 @@ set(SOURCE main.cpp
         wst_scene.cpp
         wst_cutscene.cpp
         wst_gamescene.cpp
+        wst_json_resource.cpp
+        wst_main.cpp
         json11.cpp)
 
 if (WIN32)
