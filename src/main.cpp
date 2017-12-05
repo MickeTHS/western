@@ -6,6 +6,7 @@
 #include "wst_gamescene.h"
 #include "wst_timer.h"
 #include "wst_trace.h"
+#include "wst_json_resource.h"
 #include "json11.h"
 #include <iostream>
 #include <fstream>
@@ -37,9 +38,9 @@ int main(int argc, char* argv[]) {
 
     
     std::string _resource_path = "resources/";
-    std::string horse_filepath = "resources/characters/horse.json";
+    std::string horse_filepath = "resources/game/characters/horse.json";
 
-    FILE *f = fopen(horse_filepath.c_str(), "rb");
+    /*FILE *f = fopen(horse_filepath.c_str(), "rb");
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);
     fseek(f, 0, SEEK_SET);  //same as rewind(f);
@@ -52,17 +53,23 @@ int main(int argc, char* argv[]) {
 
     content[fsize] = 0;
 
-    const auto json_horse = json11::Json::parse(content, err);
+    const auto json_horse = json11::Json::parse(content, err);*/
+
+    json11::Json json_test;
+
+    Json_resource::load_file(horse_filepath, json_test);
+
+    LOG("static load: %s\n", json_test["id"].string_value().c_str());
 
     std::cout << err << std::endl;
 
-    std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;
+    //std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;
 
-    char animation_filepath[256];
+    /*char animation_filepath[256];
     int num_frames = json_horse["num_frames"].int_value();
 
     sprintf(animation_filepath, "%s%s", _resource_path.c_str(), json_horse["animation"].string_value().c_str());
-
+*/
     char app_version[128];
     char app_title[128];
 
@@ -76,10 +83,10 @@ int main(int argc, char* argv[]) {
 
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
 
-    Screen_render_obj* horse = new Screen_render_obj(animation_filepath, num_frames);
+    /*Screen_render_obj* horse = new Screen_render_obj("horse", animation_filepath, num_frames);
     horse->set_pos(Pos(0,0));
     horse->set_reversed(true);
-    horse->set_framerate(0.1);
+    horse->set_framerate(0.1);*/
     
     Game_scene first_scene;
     first_scene.set_pos(Pos(0,0));
@@ -88,7 +95,7 @@ int main(int argc, char* argv[]) {
     
     // ----- THE SKY ------ / 
     Scene_layer* sky_layer = new Scene_layer("sky", true);
-    Screen_render_obj* sky = new Screen_render_obj(_resource_path + "sky_horizon", 1);
+    Screen_render_obj* sky = new Screen_render_obj("sky", _resource_path + "sky_horizon", 1);
     
     sky->set_pos(Pos(0,0));
     
@@ -102,7 +109,7 @@ int main(int argc, char* argv[]) {
     
     // ----- THE GROUND ----- /
     Scene_layer* ground_layer = new Scene_layer("ground", true);
-    Screen_render_obj* ground = new Screen_render_obj(_resource_path + "ground_repeat", 1);
+    Screen_render_obj* ground = new Screen_render_obj("ground", _resource_path + "ground_repeat", 1);
     ground->set_pos(Pos(0,0));
     ground_layer->add_render_obj(ground);
     ground_layer->set_pos(Pos(0,190));
@@ -115,7 +122,7 @@ int main(int argc, char* argv[]) {
     
     ground->set_fill(FillScene_Repeat_x);
     ground->update();
-    ground_layer->add_render_obj(horse);
+    //ground_layer->add_render_obj(horse);
     
 
     Player_character player(_resource_path + "exwalk", 8);

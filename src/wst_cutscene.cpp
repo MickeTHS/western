@@ -69,7 +69,19 @@ namespace wst {
         auto assets = json["assets"].array_items();
 
         for (size_t i = 0; i < assets.size(); ++i) {
-            _asset_ids.push_back(assets[i].string_value());
+            if (!assets[i]["object_id"].is_string()) {
+                LOG("error: asset index %d element \"object_id\" must be a string referencing an asset ", i);
+                return false;
+            }
+            if (!assets[i]["file"].is_string()) {
+                LOG("error: asset index %d element \"file\" must be the relative path to asset definition file ", i);
+                return false;
+            }
+            
+            string asset_id = assets[i]["object_id"].string_value();
+            string filepath = assets[i]["file"].string_value();
+            //string asset_id = 
+            //_asset_ids.push_back(assets[i].string_value());
         }
 
         auto frames = json["frames"].array_items();
@@ -107,6 +119,6 @@ namespace wst {
     }
 
     Resource_type Cutscene::type() {
-        return CINEMATIC;
+        return RES_CINEMATIC;
     }
 }

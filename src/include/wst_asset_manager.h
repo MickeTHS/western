@@ -1,30 +1,34 @@
 #pragma once
 
 #include "wst_screenrenderobj.h"
+#include "wst_json_resource.h"
 
 #include <memory>
 #include <vector>
 #include <string>
 
+
 using namespace std;
 
 namespace wst {
-    struct Asset_handler {
+    struct Asset_manager {
         
-        Asset_handler(Asset_handler const&) = delete;
-        Asset_handler& operator=(Asset_handler const&) = delete;
+        Asset_manager(Asset_manager const&) = delete;
+        Asset_manager& operator=(Asset_manager const&) = delete;
 
-        static std::shared_ptr<Asset_handler> instance()
+        static shared_ptr<Asset_manager> instance()
         {
-            static std::shared_ptr<Asset_handler> s{new Asset_handler};
+            static shared_ptr<Asset_manager> s{new Asset_manager };
             return s;
         }
 
-        shared_ptr<Screen_render_obj> get_by_id(const string& id);
+        shared_ptr<Json_resource> get_by_id(const string& id);
+
+        shared_ptr<Json_resource> create_asset(const string& id, const string& filepath);
 
     private:
-        Asset_handler() {}
+        Asset_manager() {}
 
-        vector<shared_ptr<Screen_render_obj>> _objects;
+        vector<shared_ptr<Json_resource>> _objects;
     };
 }

@@ -1,8 +1,8 @@
 #include "wst_screenrenderobj.h"
 
 namespace wst {
-    Screen_render_obj::Screen_render_obj(const string& id, const string& prefix_path, int num_frames) {
-        load(id, prefix_path, num_frames);
+    Screen_render_obj::Screen_render_obj(const string& name, const string& prefix_path, int num_frames) {
+        load(name, prefix_path, num_frames);
         _timer = 0;
         _reversed = false;
         _frame_rate = 0.1;
@@ -15,7 +15,8 @@ namespace wst {
         _frame_rate = 0.1;
     }
 
-    void Screen_render_obj::load(const string& id, const string& prefix_path, int num_frames) {
+    void Screen_render_obj::load(const string& name, const string& prefix_path, int num_frames) {
+        _name = name;
         _frames.load(prefix_path, num_frames);
         _frames.set_parent(this);
 
@@ -26,12 +27,12 @@ namespace wst {
         _valid = true;
     }
 
-    string Screen_render_obj::id() {
-        return _id;
+    string Screen_render_obj::name() {
+        return _name;
     }
 
-    void Screen_render_obj::set_id(const string& id) {
-        _id = id;
+    void Screen_render_obj::set_name(const string& name) {
+        _name = name;
     }
 
 

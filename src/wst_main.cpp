@@ -6,11 +6,11 @@ namespace wst {
     }
 
     bool Game::init() {
-
+        return true;
     }
 
     Resource_type Game::type() {
-        return GAMEDEF;
+        return RES_GAMEDEF;
     }
 
 
@@ -30,6 +30,6 @@ namespace wst {
     }
 
     Resource_type Main::type() {
-        return MAIN;
+        return RES_MAIN;
     }
 }
