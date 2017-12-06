@@ -1,14 +1,17 @@
 #include "wst_scene.h"
 #include "wst_trace.h"
+#include "wst_asset_manager.h"
 
 namespace wst {
 
     bool sort_layers(Scene_layer* a, Scene_layer* b) { return (a->z_index() < b->z_index()); }
 
-    Frame::Frame(int time, const string& object_id, const string& action) {
+    Frame::Frame(int time, const string& object_id, const string& layer, const string& action, Pos p) {
         _time       = time;
         _object_id  = object_id;
         _action     = action;
+        _pos        = p;
+        _layer      = layer;
     }
     
     Scene_layer::Scene_layer(const std::string& id, bool load_now) {
@@ -51,7 +54,7 @@ namespace wst {
         _rect = r;
     }
     
-    void Scene_layer::add_render_obj(Screen_render_obj* obj) {
+    void Scene_layer::add_render_obj(shared_ptr<Screen_render_obj> obj) {
         obj->set_parent(this);
         add(obj);
         _render_objects.push_back(obj);
@@ -111,49 +114,83 @@ namespace wst {
         for (size_t i = 0; i < assets.size(); ++i) {
             if (!valid_string(assets[i], "object_id")) { return false; }
             if (!valid_string(assets[i], "file")) { return false; }
-            
-            
+            if (!valid_string(assets[i], "type")) { return false; }
+                        
             string asset_id = assets[i]["object_id"].string_value();
             string filepath = assets[i]["file"].string_value();
+            string type     = assets[i]["type"].string_value();
+
+            Asset_manager::instance()->create_asset(asset_id, filepath);
         }
 
         auto frames = json["frames"].array_items();
 
         for (size_t i = 0; i < frames.size(); ++i) {
+            Pos p;
             if (!valid_int(frames[i], "time")) { return false; }
             if (!valid_string(frames[i], "object_id")) { return false; }
+            if (!valid_string(frames[i], "layer")) { return false; }
             if (!valid_string(frames[i], "action")) { return false; }
-            if (!valid_array(frames[i], "pos")) { return false; }
+            if (!valid_array(frames[i], "pos")) { LOG("  Info: No pos on frame\n"); }
+            else { 
+                p.x = frames[i]["pos"][0].int_value();
+                p.y = frames[i]["pos"][1].int_value();
+            }
             
             int time = frames[i]["time"].int_value();
             string object_id = frames[i]["object_id"].string_value();
             string action = frames[i]["action"].string_value();
-            int x = frames[i]["pos"][0].int_value();
-            int y = frames[i]["pos"][1].int_value();
+            string layer = frames[i]["layer"].string_value();
+            
+            LOG("  Frame (%d): time: %d, object_id: %s, layer: %s, action: %s, x: %d, y: %d\n", i, time, object_id.c_str(), layer.c_str(), action.c_str(), p.x, p.y);
 
-            LOG("  Frame (%d): time: %d, object_id: %s, action: %s, x: %d, y: %d\n", i, time, object_id.c_str(), action.c_str(), x, y);
+            shared_ptr<Frame> frame = make_shared<Frame>(time, object_id, layer, action, p);
+
+            _frames.push_back(frame);
         }
         
         //_assets
         return true;
     }
 
-    void Scene::add_layer(Scene_layer* layer) {
-        layer->set_parent(this);
+    bool Scene::create() {
+        // create assets
+
+        
+
+
+        // create layers
+
+        for (auto f : _frames) {
+            auto l = layer(f->_layer);
+
+            if (l == nullptr) {
+                l = make_shared<Scene_layer>(f->_layer, true);
+                _layers.push_back(l);
+            }
+
+            
+        }
+
+        return true;
+    }
+
+    void Scene::add_layer(shared_ptr<Scene_layer> layer) {
+        //layer->set_parent(this);
         add(layer);
         _layers.push_back(layer);
 
         update_children();
     }
 
-    Scene_layer* Scene::layer(const std::string& id) {
+    shared_ptr<Scene_layer> Scene::layer(const std::string& id) {
         for (size_t i = 0; i < _layers.size(); ++i) {
             if (_layers[i]->id() == id) {
                 return _layers[i];
             }
         }
 
-        return NULL;
+        return nullptr;
     }
 
     Rect Scene::clipping_rect() { return _clipping_rect; }

@@ -2,13 +2,14 @@
 
 #include "wst_player_character.h"
 #include "wst_npc.h"
+#include "wst_environment.h"
 
 namespace wst {
     string Asset_manager::ROOT_FOLDER = "";
 
-    shared_ptr<Json_resource> Asset_manager::get_by_id(const string& id) {
+    shared_ptr<Json_resource> Asset_manager::get_by_object_id(const string& id) {
         for (auto obj : _objects) {
-            if (obj->id() == id) {
+            if (obj->object_id() == id) {
                 return obj;
             }
         }
@@ -17,7 +18,7 @@ namespace wst {
     }
 
     shared_ptr<Json_resource> Asset_manager::create_asset(const string& id, const string& filepath) {
-        shared_ptr<Json_resource> res = get_by_id(id);
+        shared_ptr<Json_resource> res = get_by_object_id(id);
 
         if (res != nullptr) {
             return res;
@@ -41,14 +42,15 @@ namespace wst {
             res = make_shared<Player_character>();
         }
         else if (type == "npc") {
-            
-
             if (!json["id"].is_string()) {
                 LOG("error: NPC '%s' has missing \"id\" element\n", filepath.c_str());
                 return nullptr;
             }
 
             res = make_shared<NPC>(json["id"].string_value());
+        }
+        else if (type == "environment") {
+            res = make_shared<Environment>();
         }
 
         if (res == nullptr) {

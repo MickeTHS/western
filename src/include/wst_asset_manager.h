@@ -25,7 +25,7 @@ namespace wst {
             return s;
         }
 
-        shared_ptr<Json_resource> get_by_id(const string& id);
+        shared_ptr<Json_resource> get_by_object_id(const string& id);
 
         shared_ptr<Json_resource> create_asset(const string& id, const string& filepath);
 

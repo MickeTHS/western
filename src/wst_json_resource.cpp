@@ -5,16 +5,16 @@
 
 namespace wst {
     Json_resource::Json_resource() {
-        _id = "none";
+        _object_id = "none";
     }
 
     Json_resource::Json_resource(const string& filepath) {
-        _id = filepath;
+        _object_id = filepath;
         load(filepath);
     }
 
-    string Json_resource::id() {
-        return _id;
+    string Json_resource::object_id() {
+        return _object_id;
     }
 
     bool Json_resource::load(const string& filepath) {

@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <vector>
+#include <memory>
 
 #include "wst_animation.h"
 #include "wst_worldobj.h"
@@ -15,25 +15,29 @@
 
 namespace wst {
     struct Frame {
-        Frame(int time, const string& object_id, const string& action);
+        Frame(int time, const string& object_id, const string& layer, const string& action, Pos p);
 
         int     _time;
         string  _object_id;
         string  _action;
+        string  _layer;
+
+        Pos     _pos;
     };
     
     struct Scene_layer : public Pos_graph_node {
-        Scene_layer(const std::string& id, bool load_now);
+        Scene_layer(const string& id, bool load_now);
 
         void    set_keep_in_view(bool keep);
         void    set_rect(int left, int top, int width, int height);
         void    set_rect(Rect r);
         void    load();
+        
 
-        std::string id();
+        string id();
 
         void    set_z_index(int index);
-        void    add_render_obj(Screen_render_obj* obj);
+        void    add_render_obj(shared_ptr<Screen_render_obj> obj);
         int     z_index();
         float   pan_multiplier();
         void    set_pan_multiplier(float mult);
@@ -42,7 +46,7 @@ namespace wst {
         Size    size() override;
         
     private:
-        std::string     _id;
+        string     _id;
 
         // the order to draw the layers when grouped in a scene with multiple layers (pretty much always)
         int             _z_index;
@@ -59,7 +63,7 @@ namespace wst {
         FillScene       _fill_prop;
 
 
-        std::vector<Screen_render_obj*> _render_objects;
+        vector<shared_ptr<Screen_render_obj>> _render_objects;
     };
 
     bool sort_layers(Scene_layer* a, Scene_layer* b);
@@ -69,6 +73,7 @@ namespace wst {
 
         bool init() override;
         Resource_type type() override;
+        bool create();
 
         // this determines the size of the scene
         void set_rect(Rect rect);
@@ -81,15 +86,13 @@ namespace wst {
 
         void order_layers();
 
-        void add_layer(Scene_layer* layer);
-        Scene_layer* layer(const std::string& id);
+        void add_layer(shared_ptr<Scene_layer> layer);
+        shared_ptr<Scene_layer> layer(const std::string& id);
         void update_children();
 
         void render(double delta, sf::RenderTarget* target);
 
     private:
-        std::vector<Scene_layer*> _layers;
-        
         Rect _view_rect;
         Rect _clipping_rect;
 
@@ -97,8 +100,9 @@ namespace wst {
         string  _next_scene;
         
         Resource_type _type;
-
-        vector<string> _asset_ids;
-        vector<Frame*> _frames;
+        
+        vector<shared_ptr<Frame>>               _frames;
+        vector<shared_ptr<Scene_layer>>         _layers;
+        vector<shared_ptr<Screen_render_obj>>   _assets;
     };
 }

@@ -22,7 +22,7 @@ namespace wst {
     struct Json_resource {
         Json_resource();
         Json_resource(const string& filename);
-        string id();
+        string object_id();
         bool load(const string& filepath);
         bool parse(const char* data);
         void set_json(json11::Json jsondata);
@@ -40,6 +40,6 @@ namespace wst {
     protected:
         json11::Json json;
         string       _filename;
-        string       _id;
+        string       _object_id;
     };
 }

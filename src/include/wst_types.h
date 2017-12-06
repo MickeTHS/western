@@ -80,10 +80,21 @@ namespace wst {
     };
 
     struct Pos_graph_node {
+        Pos_graph_node(Pos_graph_node const&) = delete;
+        Pos_graph_node& operator=(Pos_graph_node const&) = delete;
+
+        static shared_ptr<Pos_graph_node> root()
+        {
+            static shared_ptr<Pos_graph_node> s{ new Pos_graph_node };
+            return s;
+        }
+
+
         Pos_graph_node() {
-            _parent = NULL;
+            _fill_property = FillScene_No;
             _pos = Pos(0,0);
             _size = Size(0,0);
+            _abs_pos = Pos(0,0);
         }
 
         virtual Size size() { return _size; }
@@ -93,17 +104,61 @@ namespace wst {
         virtual void set_pos(Pos pos) { _pos = pos; }
         
         virtual Pos abs_pos() { 
-            return calc_abs_pos();
+            return _abs_pos;
+        }
+
+        void calc_abs_pos_tree(Pos parent_pos) {
+            for (auto c : _children) {
+                Pos p = c->calc_abs_pos(parent_pos);
+                calc_abs_pos_tree(p);
+            }
+        }
+
+        void update(Pos parent_pos, Size parent_size) {
+            if (_fill_property == FillScene_Repeat_x) {
+                Size target_size = Size(parent_size.w, 0) + _orig_size;
+
+                set_size(target_size);
+            }
+
+            for (auto c : _children) {
+                c->update(_abs_pos, _size);
+            }
+        }
+
+        void set_fill(FillScene prop) {
+            _fill_property = prop;
+        }
+
+        FillScene get_fill() { return _fill_property; }
+
+        
+        static shared_ptr<Pos_graph_node> find_parent(shared_ptr<Pos_graph_node> node, shared_ptr<Pos_graph_node> parent) {
+            
+            for (auto c : parent->_children) {
+                if (c == node) {
+                    return parent;
+                }
+
+                auto p = find_parent(node, c);
+
+                if (p != nullptr) {
+                    return p;
+                }
+            }
+
+            return nullptr;
         }
         
-        void set_parent(Pos_graph_node* node) { _parent = node; }
-        Pos_graph_node* parent() { return _parent; }
 
-        void add(Pos_graph_node* node) {
+        //void set_parent(shared_ptr<Pos_graph_node> node) { _parent = node; }
+        //shared_ptr<Pos_graph_node> parent() { return _parent; }
+
+        void add(shared_ptr<Pos_graph_node> node) {
             _children.push_back(node);
         }
 
-        void remove(Pos_graph_node* node) {
+        void remove(shared_ptr<Pos_graph_node> node) {
             for (size_t i = 0; i < _children.size(); ++i) {
                 if (_children[i] == node) {
                     _children.erase(_children.begin() + i, _children.begin() + i + 1);
@@ -120,20 +175,22 @@ namespace wst {
         
 
     protected:
-        Pos calc_abs_pos() const {
+        Pos calc_abs_pos(Pos parent_abs_pos) {
             Pos p = _pos;
 
-            if (_parent != NULL) {
-                p += _parent->calc_abs_pos();
-            }
-
+            p += parent_abs_pos;
+            _abs_pos = p;
             return p;
         }
 
         Pos     _pos;
+        Pos     _abs_pos;
+        Pos     _parent_abs_pos;
+        Pos     _parent_size;
         Size    _size;
+        Size    _orig_size;
+        FillScene _fill_property;
         
-        std::vector<Pos_graph_node*> _children;
-        Pos_graph_node  *_parent;
+        vector<shared_ptr<Pos_graph_node>> _children;
     };
 }

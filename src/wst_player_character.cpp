@@ -2,7 +2,7 @@
 
 namespace wst {
     Player_character::Player_character(const std::string& prefix_path, int num_frames) 
-        :   Screen_render_obj("player", prefix_path, num_frames),
+        :   Screen_render_obj(),
             Json_resource() {}
 
     Player_character::Player_character() : Screen_render_obj(), Json_resource() {

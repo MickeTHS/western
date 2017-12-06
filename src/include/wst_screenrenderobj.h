@@ -16,6 +16,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "wst_animation.h"
 #include "wst_types.h"
@@ -39,16 +40,14 @@ namespace wst {
 
 
     struct Screen_render_obj : public Pos_graph_node {
-        Screen_render_obj(const string& name, const string& prefix_path, int num_frames);
+        
         Screen_render_obj();
 
-        void load(const string& name, const string& prefix_path, int num_frames);
-
+        void load_map(const string& fullpath, int f_width, int f_height, int num_frames);
+        
         void render(double delta, sf::RenderTarget* target);
 
-        void set_fill(FillScene prop);
-        FillScene get_fill();
-
+        
         string name();
         void set_name(const string& id);
 

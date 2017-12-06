@@ -1,5 +1,7 @@
 {
     "object_id":"sky",
     "type":"environment",
-    ""
+    "data":"game/data/sky.png",
+    "repeat_x":true,
+    "repeat_y":false
 }

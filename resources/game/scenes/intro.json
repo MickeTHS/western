@@ -5,10 +5,12 @@
     "assets": [
         {
             "object_id":"somehorse",
+            "type":"npc",
             "file":"game/characters/horse.json"
         },
         {
             "object_id":"sky",
+            "type":"environment",
             "file":"game/environment/sky.json"
         }
     ],
@@ -16,19 +18,22 @@
         {
             "time":0,
             "object_id":"sky",
-            "frame_num":0
+            "frame_num":0,
+            "layer":"backdrop"
         },
         {
             "time":0,
             "object_id":"somehorse",
             "action":"gallop",
-            "pos":[-100,200]
+            "pos":[-100,200],
+            "layer":"front"
         },
         {
             "time":10000,
             "object_id":"somehorse",
             "action":"stop",
-            "pos":[200,200]
+            "pos":[200,200],
+            "layer":"front"
         }
     ]
 }

@@ -31,9 +31,12 @@ namespace wst {
 
 
         _next_scene = make_shared<Scene>(next_scene);
+
         if (!_next_scene->init()) {
             LOG("error: failed to init next_scene '%s' in Game \n", next_scene.c_str());
         }
+
+        Pos_graph_node::root()->add(_next_scene);
 
         return true;
     }
