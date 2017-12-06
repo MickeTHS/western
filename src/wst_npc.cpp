@@ -4,34 +4,39 @@
 
 
 namespace wst {
-    NPC::NPC(const string& id) : Screen_render_obj(), Json_resource(), _object_id(id) {}
+    NPC::NPC() : Screen_render_obj(), Json_resource() {}
 
     string NPC::object_id() { return _object_id; }
 
     bool NPC::init() {
-        LOG("init NPC '%s'...\n", _object_id.c_str());
+        if (!Json_resource::init()) {
+            LOG("  error: failed to init NPC '%s'\n", _filename.c_str());
+            return false;
+        }
+
+        LOG("  init NPC '%s'...\n", _object_id.c_str());
         if (json.is_null()) {
-            LOG("error: json is null...\n");
+            LOG("   error: json is null...\n");
             return false;
         }
 
         if (!json["type"].is_string()) {
-            LOG("error: \"type\" must be \"npc\"\n");
+            LOG("   error: \"type\" must be \"npc\"\n");
             return false;
         }
 
         if (!json["data"].is_string()) {
-            LOG("error: \"data\" must be path to file\n");
+            LOG("   error: \"data\" must be path to file\n");
             return false;
         }
 
         if (!json["animation"].is_string()) {
-            LOG("error: \"animation\" must be a name of the animation\n");
+            LOG("   error: \"animation\" must be a name of the animation\n");
             return false;
         }
 
         if (!json["num_frames"].is_number()) {
-            LOG("error: \"num_frames\" must be integer ");
+            LOG("   error: \"num_frames\" must be integer ");
             return false;
         }
 

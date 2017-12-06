@@ -17,6 +17,14 @@ namespace wst {
         return _object_id;
     }
 
+    bool Json_resource::init() {
+        if (!valid_string(json, "object_id")) { return false; }
+
+        _object_id = json["object_id"].string_value();
+
+        return true;
+    }
+
     bool Json_resource::load(const string& filepath) {
         _filename = filepath;
 
@@ -39,9 +47,11 @@ namespace wst {
         return true;
     }
 
-    bool Json_resource::valid_string(json11::Json& j, const char* name) {
+    bool Json_resource::valid_string(json11::Json& j, const char* name, bool log_failure) {
         if (!j[name].is_string()) {
-            LOG("element \"%s\" is missing or not a string\n", name);
+            if (log_failure) {
+                LOG("element \"%s\" is missing or not a string\n", name);
+            }
             return false;
         }
 
@@ -49,27 +59,33 @@ namespace wst {
     }
 
     
-    bool Json_resource::valid_bool(json11::Json& j, const char* name) {
+    bool Json_resource::valid_bool(json11::Json& j, const char* name, bool log_failure) {
         if (!j[name].is_bool()) {
-            LOG("element \"%s\" is missing or not a boolean (true or false)\n", name);
+            if (log_failure) {
+                LOG("element \"%s\" is missing or not a boolean (true or false)\n", name);
+            }
             return false;
         }
 
         return true;
     }
 
-    bool Json_resource::valid_int(json11::Json& j, const char* name) {
+    bool Json_resource::valid_int(json11::Json& j, const char* name, bool log_failure) {
         if (!j[name].is_number()) {
-            LOG("element \"%s\" is missing or not an integer\n", name);
+            if (log_failure) {
+                LOG("element \"%s\" is missing or not an integer\n", name);
+            }
             return false;
         }
 
         return true;
     }
 
-    bool Json_resource::valid_array(json11::Json& j, const char* name) {
+    bool Json_resource::valid_array(json11::Json& j, const char* name, bool log_failure) {
         if (!j[name].is_array()) {
-            LOG("element \"%s\" is missing or not an array\n", name);
+            if (log_failure) {
+                LOG("element \"%s\" is missing or not an array\n", name);
+            }
             return false;
         }
 
@@ -78,8 +94,14 @@ namespace wst {
     
     
     bool Json_resource::load_file(const string& filepath, json11::Json& json) {
-        
+        TRACE("reading %s...\n", filepath.c_str());
         FILE *f = fopen(filepath.c_str(), "rb");
+
+        if (f == NULL) {
+            LOG("error: file '%s' doesnt exist\n", filepath.c_str());
+            return false;
+        }
+
         fseek(f, 0, SEEK_END);
         long fsize = ftell(f);
         fseek(f, 0, SEEK_SET);  //same as rewind(f);

@@ -18,6 +18,8 @@ namespace wst {
     }
 
     shared_ptr<Json_resource> Asset_manager::create_asset(const string& id, const string& filepath) {
+        TRACE("creating asset: %s\n", id.c_str());
+
         shared_ptr<Json_resource> res = get_by_object_id(id);
 
         if (res != nullptr) {
@@ -25,6 +27,8 @@ namespace wst {
         }
 
         json11::Json json;
+
+        TRACE("reading json file %s\n", filepath.c_str());
         
         if (!Json_resource::load_file(filepath, json)) {
             LOG("error: cant load file %s\n", filepath.c_str());
@@ -32,7 +36,12 @@ namespace wst {
         }
 
         if (!json["type"].is_string()) {
-            LOG("error: %s missing \"type\" element\n", filepath.c_str());
+            LOG("error: '%s' missing \"type\" element\n", filepath.c_str());
+            return nullptr;
+        }
+
+        if (!json["object_id"].is_string()) {
+            LOG("error: '%s' missing \"object_id\" element\n", filepath.c_str());
             return nullptr;
         }
 
@@ -42,12 +51,7 @@ namespace wst {
             res = make_shared<Player_character>();
         }
         else if (type == "npc") {
-            if (!json["id"].is_string()) {
-                LOG("error: NPC '%s' has missing \"id\" element\n", filepath.c_str());
-                return nullptr;
-            }
-
-            res = make_shared<NPC>(json["id"].string_value());
+            res = make_shared<NPC>();
         }
         else if (type == "environment") {
             res = make_shared<Environment>();

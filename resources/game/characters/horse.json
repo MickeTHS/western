@@ -1,5 +1,5 @@
 {
-    "id":"horse",
+    "object_id":"horse",
     "animation":"horse_walk",
     "num_frames":9,
     "type":"npc",

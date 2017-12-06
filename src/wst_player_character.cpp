@@ -11,6 +11,12 @@ namespace wst {
 
 
     bool Player_character::init() { 
+        if (!Json_resource::init()) {
+            LOG("error: failed to init Player_character '%s'\n", _filename.c_str());
+            return false;
+        }
+
+        LOG("init player character...\n");
         return true; 
     }
 

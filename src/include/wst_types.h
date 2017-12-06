@@ -1,8 +1,22 @@
 #pragma once
 
 #include <vector>
+#include <memory>
+#include <string>
+
+using namespace std;
 
 namespace wst {
+
+    enum FillScene {
+        FillScene_No = 0,
+        FillScene_Repeat_x,
+        FillScene_Repeat_y,
+        FillScene_Repeat_xy,
+        FillScene_Stretch_x,
+        FillScene_Stretch_y,
+        FillScene_Stretch_xy
+    };
 
     struct Size {
         Size(int w, int h) { this->w = w; this->h = h; }
@@ -150,10 +164,6 @@ namespace wst {
             return nullptr;
         }
         
-
-        //void set_parent(shared_ptr<Pos_graph_node> node) { _parent = node; }
-        //shared_ptr<Pos_graph_node> parent() { return _parent; }
-
         void add(shared_ptr<Pos_graph_node> node) {
             _children.push_back(node);
         }

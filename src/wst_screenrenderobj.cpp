@@ -59,30 +59,4 @@ namespace wst {
 
         _frames.set_reversed(_reversed);
     }
-
-    void Screen_render_obj::set_size(Size size) {
-        _frames.set_size(size);
-    }
-
-    void Screen_render_obj::set_pos(Pos p) {
-        if (_fill_prop == FillScene_Repeat_x) {
-            if (!_valid) {
-                return;
-            }
-
-            if (_pos.x > _parent->pos().x) {
-                _pos.x = _parent->pos().x - _frames.current()->orig_size.w;
-            }
-            else if (_pos.x < _parent->pos().x - _frames.current()->orig_size.w) {
-                _pos.x = _parent->pos().x;
-            }
-            else {
-                _pos = p;
-            }
-        }
-        else {
-            _pos = p;
-            _frames.set_pos(p);
-        }
-    }
 }

@@ -32,7 +32,6 @@ namespace wst {
         shared_ptr<Animation_frame> current();
 
         void set_tex_repeat(bool repeat);
-        void set_size(Size size) override;
         void set_reversed(bool reverse);
     private:
         vector<shared_ptr<Animation_frame>> _frames;

@@ -1,4 +1,5 @@
 {
+    "object_id":"intro",
     "type":"cinematic",
     "skippable":true,
     "next_scene":"game/scenes/scene_0.json",

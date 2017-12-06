@@ -70,6 +70,7 @@ set(SOURCE main.cpp
         wst_json_resource.cpp
         wst_main.cpp
         wst_asset_manager.cpp
+        wst_environment.cpp
         json11.cpp)
 
 if (WIN32)

@@ -1,6 +1,6 @@
 [
     {
-        "id":"jacket_0001",
+        "object_id":"jacket_0001",
         "type":"jacket",
         "stats": [
             {"hp":1}

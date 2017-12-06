@@ -26,6 +26,7 @@ namespace wst {
     };
     
     struct Scene_layer : public Pos_graph_node {
+        Scene_layer();
         Scene_layer(const string& id, bool load_now);
 
         void    set_keep_in_view(bool keep);
@@ -33,7 +34,6 @@ namespace wst {
         void    set_rect(Rect r);
         void    load();
         
-
         string id();
 
         void    set_z_index(int index);
@@ -42,8 +42,6 @@ namespace wst {
         float   pan_multiplier();
         void    set_pan_multiplier(float mult);
         void    render(double delta, sf::RenderTarget* target);
-        
-        Size    size() override;
         
     private:
         string     _id;
@@ -66,7 +64,7 @@ namespace wst {
         vector<shared_ptr<Screen_render_obj>> _render_objects;
     };
 
-    bool sort_layers(Scene_layer* a, Scene_layer* b);
+    bool sort_layers(shared_ptr<Scene_layer> a, shared_ptr<Scene_layer> b);
 
     struct Scene : public Pos_graph_node, public Json_resource  {
         Scene(const string& filepath);
@@ -78,7 +76,7 @@ namespace wst {
         // this determines the size of the scene
         void set_rect(Rect rect);
         Rect rect();
-        Size size() override;
+        
         // clipping rect is the way we "clip" the scene. if we move the clipping rect it wont cause the scene to move,
         // rather it will cause the "lens" to move
         void set_clipping_rect(Rect rect);

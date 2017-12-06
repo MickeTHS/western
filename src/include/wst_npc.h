@@ -10,7 +10,7 @@ using namespace std;
 
 namespace wst {
     struct NPC : public Screen_render_obj, public Json_resource {
-        NPC(const string& id);
+        NPC();
 
         string object_id();
 
@@ -18,7 +18,7 @@ namespace wst {
         Resource_type type();
 
     private:
-        string _object_id;
+        
         string _type;
         string _animation;
         string _data;

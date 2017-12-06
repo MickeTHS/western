@@ -1,5 +1,5 @@
 {
-    "id":"player",
+    "object_id":"boss1",
     "animation":"exwalk",
     "type":"npc",
     "unique":false,

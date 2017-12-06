@@ -7,10 +7,14 @@ namespace wst {
     }
 
     bool Environment::init() {
+        if (!Json_resource::init()) {
+            LOG("  error: failed to init Environment '%s'\n", _filename.c_str());
+            return false;
+        }
 
-        LOG("init Environment '%s'...\n", _object_id.c_str());
+        LOG("  init Environment '%s'...\n", _object_id.c_str());
         if (json.is_null()) {
-            LOG("error: json is null\n");
+            LOG("   error: json is null\n");
             return false;
         }
 
@@ -18,12 +22,12 @@ namespace wst {
         if (!valid_string(json, "data")) { return false; }
 
         if (!json["repeat_x"].is_null() && !json["repeat_x"].is_bool()) {
-            LOG("error: optional element \"repeat_x\" must be true or false\n");
+            LOG("   error: optional element \"repeat_x\" must be true or false\n");
             return false;
         }
 
         if (!json["repeat_y"].is_null() && !json["repeat_y"].is_bool()) {
-            LOG("error: optional element \"repeat_y\" must be true or false\n");
+            LOG("   error: optional element \"repeat_y\" must be true or false\n");
             return false;
         }
 
@@ -33,7 +37,7 @@ namespace wst {
         _type = json["type"].string_value();
         
 
-        LOG("Environment loaded: %s, %s\n", _data.c_str(), _type.c_str());
+        LOG("   Environment: '%s', type: '%s'\n", _data.c_str(), _type.c_str());
 
         return true;
     }

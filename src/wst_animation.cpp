@@ -36,7 +36,7 @@ namespace wst {
 
         for (int i = 0; i < num_frames; ++i) {
             shared_ptr<Animation_frame> f = make_shared<Animation_frame>(tex, x, y, f_width, f_height);
-            f->set_parent(this);
+            
             x++;
 
             if (x > num_x) {
@@ -93,12 +93,5 @@ namespace wst {
         }       
 
         return f;
-    }
-
-    void Animation_frames::set_size(Size size) {
-        for (size_t i = 0; i < _frames.size(); ++i) {
-            _frames[i]->sprite.setTextureRect(sf::IntRect(0, 0, size.w, size.h));
-            _frames[i]->set_size(size);
-        }
     }
 }

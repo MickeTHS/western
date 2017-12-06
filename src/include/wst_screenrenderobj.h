@@ -28,17 +28,6 @@ using namespace std;
 
 namespace wst {
 
-    enum FillScene {
-        FillScene_No = 0,
-        FillScene_Repeat_x,
-        FillScene_Repeat_y,
-        FillScene_Repeat_xy,
-        FillScene_Stretch_x,
-        FillScene_Stretch_y,
-        FillScene_Stretch_xy
-    };
-
-
     struct Screen_render_obj : public Pos_graph_node {
         
         Screen_render_obj();
@@ -47,14 +36,11 @@ namespace wst {
         
         void render(double delta, sf::RenderTarget* target);
 
-        
         string name();
         void set_name(const string& id);
 
         void update();
 
-        void set_pos(Pos p) override;
-        void set_size(Size size) override;
         void set_reversed(bool reverse);
 
         void set_framerate(double rate);

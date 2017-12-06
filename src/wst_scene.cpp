@@ -4,7 +4,7 @@
 
 namespace wst {
 
-    bool sort_layers(Scene_layer* a, Scene_layer* b) { return (a->z_index() < b->z_index()); }
+    bool sort_layers(shared_ptr<Scene_layer> a, shared_ptr<Scene_layer> b) { return (a->z_index() < b->z_index()); }
 
     Frame::Frame(int time, const string& object_id, const string& layer, const string& action, Pos p) {
         _time       = time;
@@ -13,8 +13,9 @@ namespace wst {
         _pos        = p;
         _layer      = layer;
     }
-    
-    Scene_layer::Scene_layer(const std::string& id, bool load_now) {
+    Scene_layer::Scene_layer() {}
+
+    Scene_layer::Scene_layer(const string& id, bool load_now) {
         _id = id;
         _z_index = 0;
         _fill_prop = FillScene_No;
@@ -32,7 +33,7 @@ namespace wst {
 
     }
 
-    std::string Scene_layer::id() { return _id; }
+    string Scene_layer::id() { return _id; }
 
     void Scene_layer::render(double delta, sf::RenderTarget* target) {
         for (size_t i = 0; i < _render_objects.size(); ++i) {
@@ -55,7 +56,6 @@ namespace wst {
     }
     
     void Scene_layer::add_render_obj(shared_ptr<Screen_render_obj> obj) {
-        obj->set_parent(this);
         add(obj);
         _render_objects.push_back(obj);
     }
@@ -76,13 +76,6 @@ namespace wst {
         return _z_index;
     }
 
-    Size Scene_layer::size() {
-        if (_parent == NULL) {
-            return _size;
-        }
-
-        return _parent->size();
-    }
 
     Scene::Scene(const string& filepath) : Json_resource(filepath) {
         _clipping_rect.size = Size(0,0);
@@ -94,8 +87,12 @@ namespace wst {
     }
 
     bool Scene::init() {
+        if (!Json_resource::init()) {
+            LOG("  error: failed to init Scene '%s'\n", _filename.c_str());
+            return false;
+        }
 
-        LOG("reading json file '%s'...\n", _filename.c_str());
+        LOG("  reading json file '%s'...\n", _filename.c_str());
 
         if (!valid_string(json, "type")) { return false; }
         if (!valid_bool(json, "skippable")) { return false; }
@@ -106,6 +103,8 @@ namespace wst {
         if (json["type"] == "cinematic") { _type = RES_CINEMATIC; }
         else { _type = RES_SCENE; }
 
+        TRACE("valid json '%s'...\n", _filename.c_str());
+
         _skippable  = json["skippable"].bool_value();
         _next_scene = json["next_scene"].string_value();
 
@@ -115,12 +114,14 @@ namespace wst {
             if (!valid_string(assets[i], "object_id")) { return false; }
             if (!valid_string(assets[i], "file")) { return false; }
             if (!valid_string(assets[i], "type")) { return false; }
-                        
+
             string asset_id = assets[i]["object_id"].string_value();
             string filepath = assets[i]["file"].string_value();
             string type     = assets[i]["type"].string_value();
 
-            Asset_manager::instance()->create_asset(asset_id, filepath);
+            TRACE("valid json asset: %s\n", asset_id.c_str());
+
+            Asset_manager::instance()->create_asset(asset_id, Asset_manager::ROOT_FOLDER + filepath);
         }
 
         auto frames = json["frames"].array_items();
@@ -130,8 +131,8 @@ namespace wst {
             if (!valid_int(frames[i], "time")) { return false; }
             if (!valid_string(frames[i], "object_id")) { return false; }
             if (!valid_string(frames[i], "layer")) { return false; }
-            if (!valid_string(frames[i], "action")) { return false; }
-            if (!valid_array(frames[i], "pos")) { LOG("  Info: No pos on frame\n"); }
+            if (!valid_string(frames[i], "action", false)) { LOG("    Info: No action on frame\n"); }
+            if (!valid_array(frames[i], "pos", false)) { LOG("    Info: No pos on frame\n"); }
             else { 
                 p.x = frames[i]["pos"][0].int_value();
                 p.y = frames[i]["pos"][1].int_value();
@@ -142,7 +143,7 @@ namespace wst {
             string action = frames[i]["action"].string_value();
             string layer = frames[i]["layer"].string_value();
             
-            LOG("  Frame (%d): time: %d, object_id: %s, layer: %s, action: %s, x: %d, y: %d\n", i, time, object_id.c_str(), layer.c_str(), action.c_str(), p.x, p.y);
+            LOG("    Frame (%d): time: %d, object_id: %s, layer: %s, action: %s, x: %d, y: %d\n", i, time, object_id.c_str(), layer.c_str(), action.c_str(), p.x, p.y);
 
             shared_ptr<Frame> frame = make_shared<Frame>(time, object_id, layer, action, p);
 
@@ -155,9 +156,6 @@ namespace wst {
 
     bool Scene::create() {
         // create assets
-
-        
-
 
         // create layers
 
@@ -176,14 +174,13 @@ namespace wst {
     }
 
     void Scene::add_layer(shared_ptr<Scene_layer> layer) {
-        //layer->set_parent(this);
         add(layer);
         _layers.push_back(layer);
 
         update_children();
     }
 
-    shared_ptr<Scene_layer> Scene::layer(const std::string& id) {
+    shared_ptr<Scene_layer> Scene::layer(const string& id) {
         for (size_t i = 0; i < _layers.size(); ++i) {
             if (_layers[i]->id() == id) {
                 return _layers[i];
@@ -224,9 +221,5 @@ namespace wst {
         for (size_t i = 0; i < _layers.size(); ++i) {
             _layers[i]->render(delta, target);
         }
-    }
-
-    Size Scene::size() {
-        return _clipping_rect.size;
     }
 }

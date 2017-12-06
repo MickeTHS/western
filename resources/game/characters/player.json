@@ -1,5 +1,5 @@
 {
-    "id":"player",
+    "object_id":"player",
     "animation":"exwalk",
     "type":"player",
     "unique":true

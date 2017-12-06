@@ -8,6 +8,7 @@ namespace wst {
     }
 
     bool Game::init() {
+        Json_resource::init();
         /*{
     "id":"maingame",
     "mode":"story",
@@ -17,7 +18,7 @@ namespace wst {
 
         LOG("parsing '%s'...\n", _filename.c_str());    
 
-        if (!valid_string(json, "id")) { return false; }
+        
         if (!valid_string(json, "mode")) { return false; }
         if (!valid_string(json, "next_scene")) { return false; }
         if (!valid_string(json, "player")) { return false; }

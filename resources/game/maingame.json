@@ -1,5 +1,5 @@
 {
-    "id":"maingame",
+    "object_id":"maingame",
     "mode":"story",
     "next_scene":"game/scenes/intro.json",
     "player":"game/characters/player.json"

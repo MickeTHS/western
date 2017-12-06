@@ -27,12 +27,12 @@ namespace wst {
         bool parse(const char* data);
         void set_json(json11::Json jsondata);
 
-        bool valid_string   (json11::Json& j, const char* name);
-        bool valid_bool     (json11::Json& j, const char* name);
-        bool valid_int      (json11::Json& j, const char* name);
-        bool valid_array    (json11::Json& j, const char* name);
+        bool valid_string   (json11::Json& j, const char* name, bool log_failure=true);
+        bool valid_bool     (json11::Json& j, const char* name, bool log_failure=true);
+        bool valid_int      (json11::Json& j, const char* name, bool log_failure=true);
+        bool valid_array    (json11::Json& j, const char* name, bool log_failure=true);
         
-        virtual bool init() = 0;
+        virtual bool init();
         virtual Resource_type type() = 0;
 
         static bool load_file(const string& filepath, json11::Json& json);

@@ -11,8 +11,8 @@ namespace wst {
     struct Environment : public Screen_render_obj, public Json_resource {
         Environment();
 
-        bool init();
-        Resource_type type();
+        bool init() override;
+        Resource_type type() override;
         
 
         string _data;
