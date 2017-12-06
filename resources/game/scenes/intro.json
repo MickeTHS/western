@@ -6,9 +6,18 @@
         {
             "object_id":"somehorse",
             "file":"game/characters/horse.json"
+        },
+        {
+            "object_id":"sky",
+            "file":"game/environment/sky.json"
         }
     ],
     "frames": [
+        {
+            "time":0,
+            "object_id":"sky",
+            "frame_num":0
+        },
         {
             "time":0,
             "object_id":"somehorse",

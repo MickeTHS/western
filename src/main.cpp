@@ -23,18 +23,14 @@
 using namespace std;
 using namespace wst;
 
-
-
 int main(int argc, char* argv[]) {
     TRACE("starting application\n");
 
     Asset_manager::ROOT_FOLDER = "resources/";
-    
-    std::string _resource_path = "resources/";
-
-    Main g(_resource_path + "main.json");
+    Main g(Asset_manager::ROOT_FOLDER + "main.json");
     if (!g.init()) {
         LOG("error: failed to init main.json\n");
+        return 0;
     }
 
     //std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;

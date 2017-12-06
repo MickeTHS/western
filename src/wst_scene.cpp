@@ -131,7 +131,7 @@ namespace wst {
             int x = frames[i]["pos"][0].int_value();
             int y = frames[i]["pos"][1].int_value();
 
-            TRACE("  Frame (%d): time: %d, object_id: %s, action: %s, x: %d, y: %d", i, time, object_id.c_str(), action.c_str(), x, y);
+            LOG("  Frame (%d): time: %d, object_id: %s, action: %s, x: %d, y: %d\n", i, time, object_id.c_str(), action.c_str(), x, y);
         }
         
         //_assets

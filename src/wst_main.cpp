@@ -22,7 +22,18 @@ namespace wst {
         if (!valid_string(json, "next_scene")) { return false; }
         if (!valid_string(json, "player")) { return false; }
 
-        
+
+        string next_scene = Asset_manager::ROOT_FOLDER + json["next_scene"].string_value();
+        _mode       = json["mode"].string_value();
+        _player     = json["player"].string_value();
+
+        TRACE("Game: next_scene: %s\n", next_scene.c_str());
+
+
+        _next_scene = make_shared<Scene>(next_scene);
+        if (!_next_scene->init()) {
+            LOG("error: failed to init next_scene '%s' in Game \n", next_scene.c_str());
+        }
 
         return true;
     }
