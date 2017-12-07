@@ -15,6 +15,8 @@ elseif (WIN32)
   set (show_contents_prog type)
 endif()
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 set(BUILD_NUMBER_FILE ${PROJECT_SOURCE_DIR}/buildnumber.txt)
 
 MESSAGE("build number stored in " ${BUILD_NUMBER_FILE})
@@ -40,6 +42,16 @@ configure_file(
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}")
+
+file(GLOB_RECURSE SRC_INCLUDE_FILES
+    "${PROJECT_SOURCE_DIR}/include/*.h"
+)
+
+message(STATUS "${PROJECT_SOURCE_DIR}/include/*.h")
+
+file(GLOB_RECURSE RESOURCE_FILES
+    ../resources/*.*)
+source_group("Resource Files" FILES ${RESOURCE_FILES})
 
 # Copy full directories
 macro(resource_dirs dirs)
@@ -71,11 +83,13 @@ set(SOURCE main.cpp
         wst_main.cpp
         wst_asset_manager.cpp
         wst_environment.cpp
+        wst_file_trigger.cpp
         json11.cpp)
 
 if (WIN32)
     set(SOURCE
         ${SOURCE}
+        ${SRC_INCLUDE_FILES}
         wst_win32.cpp)
 else ()
     set(SOURCE
@@ -84,6 +98,7 @@ else ()
 endif ()
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE})
+set_target_properties(${EXECUTABLE_NAME} PROPERTIES RESOURCE ${RESOURCE_FILES})
 
 resource_dirs(${PROJECT_SOURCE_DIR}/../resources)
 

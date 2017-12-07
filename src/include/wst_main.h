@@ -20,6 +20,7 @@ namespace wst {
         bool init();
         Resource_type type();
         bool create();
+        bool start();
 
         void render(sf::RenderTarget* target);
 

@@ -40,66 +40,11 @@ int main(int argc, char* argv[]) {
         LOG("error: failed to init main.json\n");
         return 0;
     }
-
-    
-
-    //std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;
-
-    /*char animation_filepath[256];
-    int num_frames = json_horse["num_frames"].int_value();
-
-    sprintf(animation_filepath, "%s%s", _resource_path.c_str(), json_horse["animation"].string_value().c_str());
-*/
     
     int screen_width = 800;
     int screen_height = 600;
 
     sf::RenderWindow window(sf::VideoMode(screen_width, screen_height, 32), app_title);
-
-    /*Screen_render_obj* horse = new Screen_render_obj("horse", animation_filepath, num_frames);
-    horse->set_pos(Pos(0,0));
-    horse->set_reversed(true);
-    horse->set_framerate(0.1);*/
-    /*
-    Game_scene first_scene;
-    first_scene.set_pos(Pos(0,0));
-    first_scene.set_rect(Rect(0, 0, screen_width, screen_height));
-    first_scene.set_clipping_rect(Rect(0, 0, screen_width, screen_height));
-    
-    // ----- THE SKY ------ / 
-    Scene_layer* sky_layer = new Scene_layer("sky", true);
-    Screen_render_obj* sky = new Screen_render_obj("sky", _resource_path + "sky_horizon", 1);
-    
-    sky->set_pos(Pos(0,0));
-    
-    sky_layer->set_pos(Pos(0,0));
-    sky_layer->set_size(Size(screen_width, screen_height));
-    sky_layer->add_render_obj(sky);
-    
-    std::cout << "setting fill" << std::endl;
-    std::cout << "done" << std::endl;
-    
-    
-    // ----- THE GROUND ----- /
-    Scene_layer* ground_layer = new Scene_layer("ground", true);
-    Screen_render_obj* ground = new Screen_render_obj("ground", _resource_path + "ground_repeat", 1);
-    ground->set_pos(Pos(0,0));
-    ground_layer->add_render_obj(ground);
-    ground_layer->set_pos(Pos(0,190));
-
-    first_scene.add_layer(sky_layer);
-    first_scene.add_layer(ground_layer);
-
-    sky->set_fill(FillScene_Repeat_x);
-    sky->update();
-    
-    ground->set_fill(FillScene_Repeat_x);
-    ground->update();
-    //ground_layer->add_render_obj(horse);
-    
-
-    Player_character player(_resource_path + "exwalk", 8);
-    player.set_pos(Pos(10,10));*/
 
     Timer tmr;
 

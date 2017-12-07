@@ -2,8 +2,10 @@
 
 #include "wst_trace.h"
 
+#include <functional>
 #include <string>
 #include "json11.h"
+#include "wst_file_trigger.h"
 
 using namespace std;
 
@@ -36,7 +38,7 @@ namespace wst {
         virtual Resource_type type() = 0;
 
         static bool load_file(const string& filepath, json11::Json& json);
-
+       
     protected:
         json11::Json json;
         string       _filename;

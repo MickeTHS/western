@@ -8,10 +8,16 @@ namespace wst {
         TRACE("game contructor: %s\n", resourcepath.c_str());
     }
 
+    // call this function to allocate all resources required by the game
     bool Game::create() {
 
         _running_scene = _next_scene;
 
+        return true;
+    }
+
+    // starts the first scene
+    bool Game::start() {
         return true;
     }
 
@@ -25,14 +31,11 @@ namespace wst {
     }
 
     bool Game::init() {
-        Json_resource::init();
-        /*{
-    "id":"maingame",
-    "mode":"story",
-    "next_scene":"scenes/intro.json",
-    "player":"characters/player.json"
-}*/
-
+        if (!Json_resource::init()) {
+            LOG("error: failed to init Game '%s'\n", _filename.c_str());
+            return false;
+        }
+        
         LOG("parsing '%s'...\n", _filename.c_str());    
 
         
