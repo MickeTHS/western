@@ -1,10 +1,27 @@
 #include "wst_main.h"
 #include "wst_asset_manager.h"
 
+#include <stdio.h>
 
 namespace wst {
     Game::Game(const string& title, const string& resourcepath) : Json_resource(resourcepath) {
         TRACE("game contructor: %s\n", resourcepath.c_str());
+    }
+
+    bool Game::create() {
+
+        _running_scene = _next_scene;
+
+        return true;
+    }
+
+    void Game::render(sf::RenderTarget* target) {
+        double delta = _tmr.elapsed();
+
+        _elapsed += delta;
+
+        _tmr.reset();
+
     }
 
     bool Game::init() {
@@ -51,6 +68,10 @@ namespace wst {
         
     }
 
+    void Main::render(sf::RenderTarget* target) {
+        _running_game->render(target);
+    }
+
     bool Main::init() {
         LOG("main init %s...\n", _filename.c_str());
 
@@ -85,5 +106,18 @@ namespace wst {
 
     Resource_type Main::type() {
         return RES_MAIN;
+    }
+
+    bool Main::create_game(const char* game) {
+        for (auto g : _games) {
+            if (strcmp(game, g->object_id().c_str()) == 0) {
+                g->create();
+
+                _running_game = g;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

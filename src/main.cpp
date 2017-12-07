@@ -26,12 +26,22 @@ using namespace wst;
 int main(int argc, char* argv[]) {
     TRACE("starting application\n");
 
+    char app_version[128];
+    char app_title[128];
+
+    sprintf(app_version, "ALPHA %d.%d.%d", western_VERSION_MAJOR, western_VERSION_MINOR, western_VERSION_PATCH);
+    sprintf(app_title, "Western Game %s", app_version);
+
+    LOG("%s\n", app_title); 
+
     Asset_manager::ROOT_FOLDER = "resources/";
     Main g(Asset_manager::ROOT_FOLDER + "main.json");
     if (!g.init()) {
         LOG("error: failed to init main.json\n");
         return 0;
     }
+
+    
 
     //std::cout << "horse id: " << json_horse["id"].string_value() << " " << json_horse["animation"].string_value() << " " << json_horse["type"].string_value() << std::endl;
 
@@ -40,14 +50,7 @@ int main(int argc, char* argv[]) {
 
     sprintf(animation_filepath, "%s%s", _resource_path.c_str(), json_horse["animation"].string_value().c_str());
 */
-    char app_version[128];
-    char app_title[128];
-
-    sprintf(app_version, "ALPHA %d.%d.%d", western_VERSION_MAJOR, western_VERSION_MINOR, western_VERSION_PATCH);
-    sprintf(app_title, "Western Game %s", app_version);
-
-    cout << "Version " << app_version << endl;
-
+    
     int screen_width = 800;
     int screen_height = 600;
 
@@ -104,6 +107,12 @@ int main(int argc, char* argv[]) {
 
     Game_action action = NONE;
     Game_action prev_action = NONE;
+
+    if (!g.create_game("maingame")) {
+        LOG("error: unable to create maingame\n");
+        return 0;
+    }
+
     while (window.isOpen()) {
         sf::Event event;
 
@@ -132,26 +141,7 @@ int main(int argc, char* argv[]) {
 
         window.clear(sf::Color::Black);
 
-        double delta = tmr.elapsed();
-
-        elapsed += delta;
-
-        tmr.reset();
-
-        //player.render(delta, (sf::RenderTarget*)&window);
-        /*first_scene.render(delta, (sf::RenderTarget*)&window);
-
-        if (elapsed > 0.025) {
-            Pos p = ground->pos();
-            ground->set_pos(p + Pos(-1,0));
-            elapsed = 0;
-
-        }*/
-
-        //horse->render(delta, (sf::RenderTarget*)&window);
-        //Pos p = ground_layer->pos();
-        //p.x += 1;
-        //ground_layer->set_pos(p);
+        g.render((sf::RenderTarget*)&window);
 
         window.display();
     }
