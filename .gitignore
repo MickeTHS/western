@@ -1,3 +1,4 @@
 build
 .vscode
 src/buildnumber.txt
+.DS_Store
